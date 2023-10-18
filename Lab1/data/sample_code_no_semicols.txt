@@ -1,0 +1,42 @@
+A = zeros(5)
+B = ones(7)
+I = eye(10)
+D1 = A .+ B'
+D2 -= A .- B'
+D3 *= A .* B'
+D4 /= A ./ B'
+
+6.6
+x = "str"  
+z = "str2"
+
+function foo(x, y) {
+    return x + y
+}
+
+a = foo(1, 2)
+
+print a + 10
+
+function funny_foo()
+    print "No braces for one line function :o"
+
+function bar(a, b) {
+    if (a <= 0)
+        return "Error"
+    
+    if (b % 2 == 1)
+        print "b is odd"
+    else
+        print "b is even"
+
+    while (a < b)
+        b -= 1
+    
+    X = eye(a)
+
+    for (i in 1:a)
+        X[i] = 2137
+
+    return X[0:a-2]
+}
