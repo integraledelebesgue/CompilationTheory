@@ -99,7 +99,7 @@ class Parser(sly.Parser):
         return p
     
     @_('')
-    def parameter_list(self, p: Production):
+    def parameter_list(self, p: Production): # (TODO fix) function call "foo(x, y)" causes error at ','
         return p
     
     @_('expr')
@@ -120,11 +120,11 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    @_('expr "(" parameter_list ")" %prec CALL')  # (TODO fix) expr causes error at the moment 
+    @_('expr "(" parameter_list ")" %prec CALL') 
     def expr(self, p: Production):
         return p
     
-    @_('expr "[" parameter_list "]" %prec SUBSCRIPT')  # (TODO fix) Doesn't work
+    @_('expr "[" parameter_list "]" %prec SUBSCRIPT')
     def expr(self, p: Production):
         return p
     
@@ -149,12 +149,12 @@ class Parser(sly.Parser):
         return p
 
     assign_statement = [
-        'ID ASSIGN expr',
-        'ID PLUS_ASSIGN expr',
-        'ID MINUS_ASSIGN expr',
-        'ID TIMES_ASSIGN expr',
-        'ID DIVIDE_ASSIGN expr',
-        'ID REMAINDER_ASSIGN expr'
+        'expr ASSIGN expr',
+        'expr PLUS_ASSIGN expr',
+        'expr MINUS_ASSIGN expr',
+        'expr TIMES_ASSIGN expr',
+        'expr DIVIDE_ASSIGN expr',
+        'expr REMAINDER_ASSIGN expr'
     ]
 
     @_(*assign_statement)

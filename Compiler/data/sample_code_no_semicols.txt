@@ -14,7 +14,8 @@ function foo(x, y) {
     return x + y
 }
 
-a = foo(1, 2)
+a = foo(1, 2, 1)
+b = foo(2, 3)
 
 print a + 10
 
