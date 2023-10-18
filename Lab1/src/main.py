@@ -1,6 +1,8 @@
 from sys import argv
 from os.path import abspath
 from lexer import Lexer
+from parser import Parser
+
 
 def print_error() -> None:
     ansii_red = "\033[91m {}\033[00m"
@@ -28,4 +30,7 @@ if __name__ == '__main__':
     lexer = Lexer()
     tokens = lexer.tokenize(source)
 
-    print(*list(tokens), sep='\n')
+    #print(*list(tokens), sep='\n')
+
+    parser = Parser()
+    parser.parse(tokens)
