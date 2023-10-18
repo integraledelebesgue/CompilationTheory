@@ -11,7 +11,7 @@ from typing import Any
 class Lexer(sly.Lexer):
     tokens = {
         INT_NUMBER, FLOAT_NUMBER, STRING,
-        ID, IF, ELSE, FOR, WHILE, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, PRINT, IN,
+        ID, IF, ELSE, FOR, WHILE, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, PRINT, IN, FUNCTION,
         AND, OR, XOR, NOT,
         PLUS, MINUS, TIMES, DIVIDE, REMAINDER,
         DOT_PLUS, DOT_MINUS, DOT_TIMES, DOT_DIVIDE, DOT_REMAINDER,
@@ -34,7 +34,7 @@ class Lexer(sly.Lexer):
     MINUS_ASSIGN = r'\-='
     TIMES_ASSIGN = r'\*='
     DIVIDE_ASSIGN = r'/='
-    REMAINDER_ASIGN = r'%='
+    REMAINDER_ASSIGN = r'%='
 
     DOT_PLUS = r'\.\+'
     DOT_MINUS = r'\.-'
@@ -74,6 +74,7 @@ class Lexer(sly.Lexer):
     ID['xor'] = XOR
     ID['not'] = NOT
     ID['in'] = IN
+    ID['function'] = FUNCTION
 
     STRING = r'\".*?\"'
 
