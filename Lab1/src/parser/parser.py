@@ -124,7 +124,7 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    @_('expr "[" parameter_list "]" %prec SUBSCRIPT')  # (TODO fix) expr causes error at the moment
+    @_('expr "[" parameter_list "]" %prec SUBSCRIPT')  # (TODO fix) Doesn't work
     def expr(self, p: Production):
         return p
     
