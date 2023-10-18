@@ -1,19 +1,31 @@
-from sly import Lexer
+import sly
 from sly.lex import Token
 from typing import Any
 
+#= 
+# Ignore all the warnings concerning token constants and '@_'.
+# They are defined at runtime by the 'sly' framework
+# =#
 
-class Scanner(Lexer):
+
+class Lexer(sly.Lexer):
     tokens = {
-        INT_NUMBER, FLOAT_NUMBER,
-        ID, IF, ELSE, FOR, WHILE, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, PRINT,
-        PLUS, MINUS, TIMES, DIVIDE,
-        DOT_PLUS, DOT_MINUS, DOT_TIMES, DOT_DIVIDE, DOT,
-        PLUS_ASSIGN, MINUS_ASSIGN, TIMES_ASSIGN, DIVIDE_ASSIGN,
-        EQUAL, NOT_EQUAL, GREATER_EQUAL, GREATER, LOWER_EQUAL, LOWER, ASSIGN
+        INT_NUMBER, FLOAT_NUMBER, STRING,
+        ID, IF, ELSE, FOR, WHILE, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, PRINT, IN,
+        AND, OR, XOR, NOT,
+        PLUS, MINUS, TIMES, DIVIDE, REMAINDER,
+        DOT_PLUS, DOT_MINUS, DOT_TIMES, DOT_DIVIDE, DOT_REMAINDER,
+        ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, TIMES_ASSIGN, DIVIDE_ASSIGN, REMAINDER_ASSIGN,
+        EQUAL, NOT_EQUAL, GREATER, GREATER_EQUAL, LOWER, LOWER_EQUAL
     }
 
-    literals = {'{', '}', '[', ']', '(', ')', ';', ':', "'", '"'}
+    literals = {
+        '{', '}', '[', ']', '(', ')', 
+        ';', ':', '.', ',', 
+        "'", '"',
+    #    '+', '-', '*', '/',
+    #    '<', '>', '=',
+    }
 
     ignore = ' \t'
     ignore_comment = r'\#.*'
@@ -22,17 +34,19 @@ class Scanner(Lexer):
     MINUS_ASSIGN = r'\-='
     TIMES_ASSIGN = r'\*='
     DIVIDE_ASSIGN = r'/='
+    REMAINDER_ASIGN = r'%='
 
     DOT_PLUS = r'\.\+'
     DOT_MINUS = r'\.-'
     DOT_TIMES = r'\.\*'
     DOT_DIVIDE = r'\./'
-    DOT = r'\.'
+    DOT_REMAINDER = r'\.%'
 
     PLUS = r'\+'
     MINUS = r'-'
     TIMES = r'\*'
     DIVIDE = r'/'
+    REMAINDER = r'%'
     
     EQUAL = r'=='
     NOT_EQUAL = r'!='
@@ -55,15 +69,22 @@ class Scanner(Lexer):
     ID['zeros'] = ZEROS
     ID['ones'] = ONES
     ID['print'] = PRINT
+    ID['and'] = AND
+    ID['or'] = OR
+    ID['xor'] = XOR
+    ID['not'] = NOT
+    ID['in'] = IN
 
-    @_(r'\d+')
-    def INT_NUMBER(self, token: Token) -> Token:
-        token.value = int(token.value)
-        return token
+    STRING = r'\".*?\"'
 
     @_(r'\d*\.\d+')
     def FLOAT_NUMBER(self, token: Token) -> Token:
         token.value = float(token.value)
+        return token
+
+    @_(r'\d+')
+    def INT_NUMBER(self, token: Token) -> Token:
+        token.value = int(token.value)
         return token
 
     @_(r'\n+')
