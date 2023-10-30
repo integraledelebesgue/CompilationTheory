@@ -19,7 +19,7 @@ class Parser(sly.Parser):
         ('left', TRANSPOSE),
         ('left', CALL, SUBSCRIPT),
         ('nonassoc', SHORT_IF),
-        ('nonassoc', ELSE),
+        ('nonassoc', ELSE)
     )
 
     #= TOP LEVEL ENTITY =#
@@ -73,13 +73,20 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    unary_expr = [
+    prefix_unary_expr = [
         'MINUS expr %prec UMINUS',
-        'NOT expr %prec UNEG',
+        'NOT expr %prec UNEG'
+    ]
+
+    @_(*prefix_unary_expr)
+    def expr(self, p: Production):
+        return p
+    
+    postfix_unary_expr = [
         '''expr "'" %prec TRANSPOSE'''
     ]
 
-    @_(*unary_expr)
+    @_(*postfix_unary_expr)
     def expr(self, p: Production):
         return p
     
@@ -98,15 +105,15 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    @_('')
-    def parameter_list(self, p: Production): # (TODO fix) function call "foo(x, y)" causes error at ','
+    # @_('')
+    # def parameter_list(self, p: Production): # (TODO fix) function call "foo(x, y)" causes error at ','
+    #     return p
+
+    @_('parameter_list "," expr')
+    def parameter_list(self, p: Production):
         return p
     
     @_('expr')
-    def parameter_list(self, p: Production):
-        return p
-
-    @_('parameter_list "," expr')
     def parameter_list(self, p: Production):
         return p
     
@@ -124,15 +131,23 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
+    @_('expr "(" ")" %prec CALL') 
+    def expr(self, p: Production):
+        return p
+    
     @_('expr "[" parameter_list "]" %prec SUBSCRIPT')
     def expr(self, p: Production):
         return p
     
     #= STATEMENTS =#
 
+    @_('expr ";"')
+    def statement(self, p: Production):
+        return p
+
     parenless_statement = [
-        'PRINT expr',
-        'RETURN expr'
+        'PRINT expr ";"',
+        'RETURN expr ";"'
     ]
 
     @_(*parenless_statement)
@@ -140,8 +155,8 @@ class Parser(sly.Parser):
         return p
     
     loop_control = [
-        'BREAK',
-        'CONTINUE'
+        'BREAK ";"',
+        'CONTINUE ";"'
     ]
 
     @_(*loop_control)
@@ -149,12 +164,12 @@ class Parser(sly.Parser):
         return p
 
     assign_statement = [
-        'expr ASSIGN expr',
-        'expr PLUS_ASSIGN expr',
-        'expr MINUS_ASSIGN expr',
-        'expr TIMES_ASSIGN expr',
-        'expr DIVIDE_ASSIGN expr',
-        'expr REMAINDER_ASSIGN expr'
+        'expr ASSIGN expr ";"',
+        'expr PLUS_ASSIGN expr ";"',
+        'expr MINUS_ASSIGN expr ";"',
+        'expr TIMES_ASSIGN expr ";"',
+        'expr DIVIDE_ASSIGN expr ";"',
+        'expr REMAINDER_ASSIGN expr ";"'
     ]
 
     @_(*assign_statement)
@@ -191,5 +206,9 @@ class Parser(sly.Parser):
         return p
     
     @_('FUNCTION ID "(" parameter_list ")" statement')
+    def function(self, p: Production):
+        return p
+    
+    @_('FUNCTION ID "(" ")" statement')
     def function(self, p: Production):
         return p
