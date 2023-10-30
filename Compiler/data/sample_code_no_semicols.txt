@@ -19,6 +19,8 @@ b = foo(2, 3);
 
 print a + 10;
 
+funny_foo();
+
 function funny_foo()
     print "No braces for one line function :o";
 

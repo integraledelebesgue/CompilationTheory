@@ -105,9 +105,9 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    # @_('')
-    # def parameter_list(self, p: Production): # (TODO fix) function call "foo(x, y)" causes error at ','
-    #     return p
+    @_('')
+    def parameter_list(self, p: Production): # (TODO fix) Shift-reduce conflict
+        return p
 
     @_('parameter_list "," expr')
     def parameter_list(self, p: Production):

@@ -42,93 +42,94 @@ Rule 38    expr -> expr MINUS expr  [precedence=left, level=5]
 Rule 39    expr -> expr PLUS expr  [precedence=left, level=5]
 Rule 40    parameter_list -> expr
 Rule 41    parameter_list -> parameter_list , expr
-Rule 42    statement -> { statement_series }
-Rule 43    statement -> FOR ( ID IN expr ) statement
-Rule 44    statement -> WHILE ( expr ) statement
-Rule 45    statement -> IF ( expr ) statement ELSE statement  [precedence=nonassoc, level=11]
-Rule 46    statement -> IF ( expr ) statement  [precedence=nonassoc, level=10]
-Rule 47    statement -> expr REMAINDER_ASSIGN expr ;
-Rule 48    statement -> expr DIVIDE_ASSIGN expr ;
-Rule 49    statement -> expr TIMES_ASSIGN expr ;
-Rule 50    statement -> expr MINUS_ASSIGN expr ;
-Rule 51    statement -> expr PLUS_ASSIGN expr ;
-Rule 52    statement -> expr ASSIGN expr ;
-Rule 53    statement -> CONTINUE ;
-Rule 54    statement -> BREAK ;
-Rule 55    statement -> RETURN expr ;
-Rule 56    statement -> PRINT expr ;
-Rule 57    statement -> expr ;
-Rule 58    statement_series -> statement_series statement
-Rule 59    statement_series -> statement
-Rule 60    function -> FUNCTION ID ( ) statement
-Rule 61    function -> FUNCTION ID ( parameter_list ) statement
+Rule 42    parameter_list -> <empty>
+Rule 43    statement -> { statement_series }
+Rule 44    statement -> FOR ( ID IN expr ) statement
+Rule 45    statement -> WHILE ( expr ) statement
+Rule 46    statement -> IF ( expr ) statement ELSE statement  [precedence=nonassoc, level=11]
+Rule 47    statement -> IF ( expr ) statement  [precedence=nonassoc, level=10]
+Rule 48    statement -> expr REMAINDER_ASSIGN expr ;
+Rule 49    statement -> expr DIVIDE_ASSIGN expr ;
+Rule 50    statement -> expr TIMES_ASSIGN expr ;
+Rule 51    statement -> expr MINUS_ASSIGN expr ;
+Rule 52    statement -> expr PLUS_ASSIGN expr ;
+Rule 53    statement -> expr ASSIGN expr ;
+Rule 54    statement -> CONTINUE ;
+Rule 55    statement -> BREAK ;
+Rule 56    statement -> RETURN expr ;
+Rule 57    statement -> PRINT expr ;
+Rule 58    statement -> expr ;
+Rule 59    statement_series -> statement_series statement
+Rule 60    statement_series -> statement
+Rule 61    function -> FUNCTION ID ( ) statement
+Rule 62    function -> FUNCTION ID ( parameter_list ) statement
 
 Terminals, with rules where they appear:
 
 '                    : 17
-(                    : 7 8 9 10 11 16 43 44 45 46 60 61
-)                    : 7 8 9 10 11 16 43 44 45 46 60 61
+(                    : 7 8 9 10 11 16 44 45 46 47 61 62
+)                    : 7 8 9 10 11 16 44 45 46 47 61 62
 ,                    : 41
 :                    : 20
-;                    : 47 48 49 50 51 52 53 54 55 56 57
+;                    : 48 49 50 51 52 53 54 55 56 57 58
 AND                  : 23
-ASSIGN               : 52
-BREAK                : 54
-CONTINUE             : 53
+ASSIGN               : 53
+BREAK                : 55
+CONTINUE             : 54
 DIVIDE               : 36
-DIVIDE_ASSIGN        : 48
+DIVIDE_ASSIGN        : 49
 DOT_DIVIDE           : 31
 DOT_MINUS            : 33
 DOT_PLUS             : 34
 DOT_REMAINDER        : 30
 DOT_TIMES            : 32
-ELSE                 : 45
+ELSE                 : 46
 EQUAL                : 29
 EYE                  : 11
 FLOAT_NUMBER         : 13
-FOR                  : 43
-FUNCTION             : 60 61
+FOR                  : 44
+FUNCTION             : 61 62
 GREATER              : 27
 GREATER_EQUAL        : 26
-ID                   : 15 43 60 61
-IF                   : 45 46
-IN                   : 43
+ID                   : 15 44 61 62
+IF                   : 46 47
+IN                   : 44
 INT_NUMBER           : 14
 LOWER                : 25
 LOWER_EQUAL          : 24
 MINUS                : 19 38
-MINUS_ASSIGN         : 50
+MINUS_ASSIGN         : 51
 NOT                  : 18
 NOT_EQUAL            : 28
 ONES                 : 10
 OR                   : 22
 PLUS                 : 39
-PLUS_ASSIGN          : 51
-PRINT                : 56
+PLUS_ASSIGN          : 52
+PRINT                : 57
 REMAINDER            : 35
-REMAINDER_ASSIGN     : 47
-RETURN               : 55
+REMAINDER_ASSIGN     : 48
+RETURN               : 56
 STRING               : 12
 TIMES                : 37
-TIMES_ASSIGN         : 49
-WHILE                : 44
+TIMES_ASSIGN         : 50
+WHILE                : 45
 XOR                  : 21
 ZEROS                : 9
 [                    : 6
 ]                    : 6
 error                : 
-{                    : 42
-}                    : 42
+{                    : 43
+}                    : 43
 
 Nonterminals, with rules where they appear:
 
 action               : 1 2
-expr                 : 5 6 7 8 16 17 18 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 39 40 41 43 44 45 46 47 47 48 48 49 49 50 50 51 51 52 52 55 56 57
+expr                 : 5 6 7 8 16 17 18 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 39 40 41 44 45 46 47 48 48 49 49 50 50 51 51 52 52 53 53 56 57 58
 function             : 3
-parameter_list       : 6 8 9 10 11 41 61
+parameter_list       : 6 8 9 10 11 41 62
 program              : 1 0
-statement            : 4 43 44 45 45 46 58 59 60 61
-statement_series     : 42 58
+statement            : 4 44 45 46 46 47 59 60 61 62
+statement_series     : 43 59
 
 
 state 0
@@ -139,24 +140,24 @@ state 0
     (3) action -> . function
     (4) action -> . statement
     (5) action -> . expr
-    (60) function -> . FUNCTION ID ( ) statement
-    (61) function -> . FUNCTION ID ( parameter_list ) statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (61) function -> . FUNCTION ID ( ) statement
+    (62) function -> . FUNCTION ID ( parameter_list ) statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -224,24 +225,24 @@ state 1
     (3) action -> . function
     (4) action -> . statement
     (5) action -> . expr
-    (60) function -> . FUNCTION ID ( ) statement
-    (61) function -> . FUNCTION ID ( parameter_list ) statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (61) function -> . FUNCTION ID ( ) statement
+    (62) function -> . FUNCTION ID ( parameter_list ) statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -379,13 +380,13 @@ state 4
 state 5
 
     (5) action -> expr .
-    (47) statement -> expr . REMAINDER_ASSIGN expr ;
-    (48) statement -> expr . DIVIDE_ASSIGN expr ;
-    (49) statement -> expr . TIMES_ASSIGN expr ;
-    (50) statement -> expr . MINUS_ASSIGN expr ;
-    (51) statement -> expr . PLUS_ASSIGN expr ;
-    (52) statement -> expr . ASSIGN expr ;
-    (57) statement -> expr . ;
+    (48) statement -> expr . REMAINDER_ASSIGN expr ;
+    (49) statement -> expr . DIVIDE_ASSIGN expr ;
+    (50) statement -> expr . TIMES_ASSIGN expr ;
+    (51) statement -> expr . MINUS_ASSIGN expr ;
+    (52) statement -> expr . PLUS_ASSIGN expr ;
+    (53) statement -> expr . ASSIGN expr ;
+    (58) statement -> expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -464,8 +465,8 @@ state 5
 
 state 6
 
-    (60) function -> FUNCTION . ID ( ) statement
-    (61) function -> FUNCTION . ID ( parameter_list ) statement
+    (61) function -> FUNCTION . ID ( ) statement
+    (62) function -> FUNCTION . ID ( parameter_list ) statement
     ID              shift and go to state 56
 
 
@@ -577,25 +578,25 @@ state 8
 
 state 9
 
-    (42) statement -> { . statement_series }
-    (58) statement_series -> . statement_series statement
-    (59) statement_series -> . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (43) statement -> { . statement_series }
+    (59) statement_series -> . statement_series statement
+    (60) statement_series -> . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -655,38 +656,38 @@ state 9
 
 state 10
 
-    (43) statement -> FOR . ( ID IN expr ) statement
+    (44) statement -> FOR . ( ID IN expr ) statement
     (               shift and go to state 61
 
 
 state 11
 
-    (44) statement -> WHILE . ( expr ) statement
+    (45) statement -> WHILE . ( expr ) statement
     (               shift and go to state 62
 
 
 state 12
 
-    (45) statement -> IF . ( expr ) statement ELSE statement
-    (46) statement -> IF . ( expr ) statement
+    (46) statement -> IF . ( expr ) statement ELSE statement
+    (47) statement -> IF . ( expr ) statement
     (               shift and go to state 63
 
 
 state 13
 
-    (53) statement -> CONTINUE . ;
+    (54) statement -> CONTINUE . ;
     ;               shift and go to state 64
 
 
 state 14
 
-    (54) statement -> BREAK . ;
+    (55) statement -> BREAK . ;
     ;               shift and go to state 65
 
 
 state 15
 
-    (55) statement -> RETURN . expr ;
+    (56) statement -> RETURN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -736,7 +737,7 @@ state 15
 
 state 16
 
-    (56) statement -> PRINT . expr ;
+    (57) statement -> PRINT . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1097,7 +1098,7 @@ state 25
 
 state 26
 
-    (47) statement -> expr REMAINDER_ASSIGN . expr ;
+    (48) statement -> expr REMAINDER_ASSIGN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1147,34 +1148,34 @@ state 26
 
 state 27
 
-    (57) statement -> expr ; .
-    FUNCTION        reduce using rule 57 (statement -> expr ; .)
-    {               reduce using rule 57 (statement -> expr ; .)
-    FOR             reduce using rule 57 (statement -> expr ; .)
-    WHILE           reduce using rule 57 (statement -> expr ; .)
-    IF              reduce using rule 57 (statement -> expr ; .)
-    CONTINUE        reduce using rule 57 (statement -> expr ; .)
-    BREAK           reduce using rule 57 (statement -> expr ; .)
-    RETURN          reduce using rule 57 (statement -> expr ; .)
-    PRINT           reduce using rule 57 (statement -> expr ; .)
-    ZEROS           reduce using rule 57 (statement -> expr ; .)
-    ONES            reduce using rule 57 (statement -> expr ; .)
-    EYE             reduce using rule 57 (statement -> expr ; .)
-    STRING          reduce using rule 57 (statement -> expr ; .)
-    FLOAT_NUMBER    reduce using rule 57 (statement -> expr ; .)
-    INT_NUMBER      reduce using rule 57 (statement -> expr ; .)
-    ID              reduce using rule 57 (statement -> expr ; .)
-    (               reduce using rule 57 (statement -> expr ; .)
-    NOT             reduce using rule 57 (statement -> expr ; .)
-    MINUS           reduce using rule 57 (statement -> expr ; .)
-    $end            reduce using rule 57 (statement -> expr ; .)
-    }               reduce using rule 57 (statement -> expr ; .)
-    ELSE            reduce using rule 57 (statement -> expr ; .)
+    (58) statement -> expr ; .
+    FUNCTION        reduce using rule 58 (statement -> expr ; .)
+    {               reduce using rule 58 (statement -> expr ; .)
+    FOR             reduce using rule 58 (statement -> expr ; .)
+    WHILE           reduce using rule 58 (statement -> expr ; .)
+    IF              reduce using rule 58 (statement -> expr ; .)
+    CONTINUE        reduce using rule 58 (statement -> expr ; .)
+    BREAK           reduce using rule 58 (statement -> expr ; .)
+    RETURN          reduce using rule 58 (statement -> expr ; .)
+    PRINT           reduce using rule 58 (statement -> expr ; .)
+    ZEROS           reduce using rule 58 (statement -> expr ; .)
+    ONES            reduce using rule 58 (statement -> expr ; .)
+    EYE             reduce using rule 58 (statement -> expr ; .)
+    STRING          reduce using rule 58 (statement -> expr ; .)
+    FLOAT_NUMBER    reduce using rule 58 (statement -> expr ; .)
+    INT_NUMBER      reduce using rule 58 (statement -> expr ; .)
+    ID              reduce using rule 58 (statement -> expr ; .)
+    (               reduce using rule 58 (statement -> expr ; .)
+    NOT             reduce using rule 58 (statement -> expr ; .)
+    MINUS           reduce using rule 58 (statement -> expr ; .)
+    $end            reduce using rule 58 (statement -> expr ; .)
+    }               reduce using rule 58 (statement -> expr ; .)
+    ELSE            reduce using rule 58 (statement -> expr ; .)
 
 
 state 28
 
-    (48) statement -> expr DIVIDE_ASSIGN . expr ;
+    (49) statement -> expr DIVIDE_ASSIGN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1224,7 +1225,7 @@ state 28
 
 state 29
 
-    (49) statement -> expr TIMES_ASSIGN . expr ;
+    (50) statement -> expr TIMES_ASSIGN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1274,7 +1275,7 @@ state 29
 
 state 30
 
-    (50) statement -> expr MINUS_ASSIGN . expr ;
+    (51) statement -> expr MINUS_ASSIGN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1324,7 +1325,7 @@ state 30
 
 state 31
 
-    (51) statement -> expr PLUS_ASSIGN . expr ;
+    (52) statement -> expr PLUS_ASSIGN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1374,7 +1375,7 @@ state 31
 
 state 32
 
-    (52) statement -> expr ASSIGN . expr ;
+    (53) statement -> expr ASSIGN . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1427,6 +1428,7 @@ state 33
     (6) expr -> expr [ . parameter_list ]
     (40) parameter_list -> . expr
     (41) parameter_list -> . parameter_list , expr
+    (42) parameter_list -> .
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1461,6 +1463,8 @@ state 33
     (37) expr -> . expr TIMES expr
     (38) expr -> . expr MINUS expr
     (39) expr -> . expr PLUS expr
+    ]               reduce using rule 42 (parameter_list -> .)
+    ,               reduce using rule 42 (parameter_list -> .)
     ZEROS           shift and go to state 17
     ONES            shift and go to state 18
     EYE             shift and go to state 19
@@ -1481,6 +1485,7 @@ state 34
     (8) expr -> expr ( . parameter_list )
     (40) parameter_list -> . expr
     (41) parameter_list -> . parameter_list , expr
+    (42) parameter_list -> .
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -1515,7 +1520,9 @@ state 34
     (37) expr -> . expr TIMES expr
     (38) expr -> . expr MINUS expr
     (39) expr -> . expr PLUS expr
+  ! shift/reduce conflict for ) resolved as shift
     )               shift and go to state 81
+    ,               reduce using rule 42 (parameter_list -> .)
     ZEROS           shift and go to state 17
     ONES            shift and go to state 18
     EYE             shift and go to state 19
@@ -2588,8 +2595,8 @@ state 55
 
 state 56
 
-    (60) function -> FUNCTION ID . ( ) statement
-    (61) function -> FUNCTION ID . ( parameter_list ) statement
+    (61) function -> FUNCTION ID . ( ) statement
+    (62) function -> FUNCTION ID . ( parameter_list ) statement
     (               shift and go to state 103
 
 
@@ -2648,24 +2655,24 @@ state 57
 
 state 58
 
-    (42) statement -> { statement_series . }
-    (58) statement_series -> statement_series . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (43) statement -> { statement_series . }
+    (59) statement_series -> statement_series . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -2725,37 +2732,37 @@ state 58
 
 state 59
 
-    (59) statement_series -> statement .
-    }               reduce using rule 59 (statement_series -> statement .)
-    {               reduce using rule 59 (statement_series -> statement .)
-    FOR             reduce using rule 59 (statement_series -> statement .)
-    WHILE           reduce using rule 59 (statement_series -> statement .)
-    IF              reduce using rule 59 (statement_series -> statement .)
-    CONTINUE        reduce using rule 59 (statement_series -> statement .)
-    BREAK           reduce using rule 59 (statement_series -> statement .)
-    RETURN          reduce using rule 59 (statement_series -> statement .)
-    PRINT           reduce using rule 59 (statement_series -> statement .)
-    ZEROS           reduce using rule 59 (statement_series -> statement .)
-    ONES            reduce using rule 59 (statement_series -> statement .)
-    EYE             reduce using rule 59 (statement_series -> statement .)
-    STRING          reduce using rule 59 (statement_series -> statement .)
-    FLOAT_NUMBER    reduce using rule 59 (statement_series -> statement .)
-    INT_NUMBER      reduce using rule 59 (statement_series -> statement .)
-    ID              reduce using rule 59 (statement_series -> statement .)
-    (               reduce using rule 59 (statement_series -> statement .)
-    NOT             reduce using rule 59 (statement_series -> statement .)
-    MINUS           reduce using rule 59 (statement_series -> statement .)
+    (60) statement_series -> statement .
+    }               reduce using rule 60 (statement_series -> statement .)
+    {               reduce using rule 60 (statement_series -> statement .)
+    FOR             reduce using rule 60 (statement_series -> statement .)
+    WHILE           reduce using rule 60 (statement_series -> statement .)
+    IF              reduce using rule 60 (statement_series -> statement .)
+    CONTINUE        reduce using rule 60 (statement_series -> statement .)
+    BREAK           reduce using rule 60 (statement_series -> statement .)
+    RETURN          reduce using rule 60 (statement_series -> statement .)
+    PRINT           reduce using rule 60 (statement_series -> statement .)
+    ZEROS           reduce using rule 60 (statement_series -> statement .)
+    ONES            reduce using rule 60 (statement_series -> statement .)
+    EYE             reduce using rule 60 (statement_series -> statement .)
+    STRING          reduce using rule 60 (statement_series -> statement .)
+    FLOAT_NUMBER    reduce using rule 60 (statement_series -> statement .)
+    INT_NUMBER      reduce using rule 60 (statement_series -> statement .)
+    ID              reduce using rule 60 (statement_series -> statement .)
+    (               reduce using rule 60 (statement_series -> statement .)
+    NOT             reduce using rule 60 (statement_series -> statement .)
+    MINUS           reduce using rule 60 (statement_series -> statement .)
 
 
 state 60
 
-    (47) statement -> expr . REMAINDER_ASSIGN expr ;
-    (48) statement -> expr . DIVIDE_ASSIGN expr ;
-    (49) statement -> expr . TIMES_ASSIGN expr ;
-    (50) statement -> expr . MINUS_ASSIGN expr ;
-    (51) statement -> expr . PLUS_ASSIGN expr ;
-    (52) statement -> expr . ASSIGN expr ;
-    (57) statement -> expr . ;
+    (48) statement -> expr . REMAINDER_ASSIGN expr ;
+    (49) statement -> expr . DIVIDE_ASSIGN expr ;
+    (50) statement -> expr . TIMES_ASSIGN expr ;
+    (51) statement -> expr . MINUS_ASSIGN expr ;
+    (52) statement -> expr . PLUS_ASSIGN expr ;
+    (53) statement -> expr . ASSIGN expr ;
+    (58) statement -> expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -2814,13 +2821,13 @@ state 60
 
 state 61
 
-    (43) statement -> FOR ( . ID IN expr ) statement
+    (44) statement -> FOR ( . ID IN expr ) statement
     ID              shift and go to state 107
 
 
 state 62
 
-    (44) statement -> WHILE ( . expr ) statement
+    (45) statement -> WHILE ( . expr ) statement
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -2870,8 +2877,8 @@ state 62
 
 state 63
 
-    (45) statement -> IF ( . expr ) statement ELSE statement
-    (46) statement -> IF ( . expr ) statement
+    (46) statement -> IF ( . expr ) statement ELSE statement
+    (47) statement -> IF ( . expr ) statement
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -2921,61 +2928,61 @@ state 63
 
 state 64
 
-    (53) statement -> CONTINUE ; .
-    FUNCTION        reduce using rule 53 (statement -> CONTINUE ; .)
-    {               reduce using rule 53 (statement -> CONTINUE ; .)
-    FOR             reduce using rule 53 (statement -> CONTINUE ; .)
-    WHILE           reduce using rule 53 (statement -> CONTINUE ; .)
-    IF              reduce using rule 53 (statement -> CONTINUE ; .)
-    CONTINUE        reduce using rule 53 (statement -> CONTINUE ; .)
-    BREAK           reduce using rule 53 (statement -> CONTINUE ; .)
-    RETURN          reduce using rule 53 (statement -> CONTINUE ; .)
-    PRINT           reduce using rule 53 (statement -> CONTINUE ; .)
-    ZEROS           reduce using rule 53 (statement -> CONTINUE ; .)
-    ONES            reduce using rule 53 (statement -> CONTINUE ; .)
-    EYE             reduce using rule 53 (statement -> CONTINUE ; .)
-    STRING          reduce using rule 53 (statement -> CONTINUE ; .)
-    FLOAT_NUMBER    reduce using rule 53 (statement -> CONTINUE ; .)
-    INT_NUMBER      reduce using rule 53 (statement -> CONTINUE ; .)
-    ID              reduce using rule 53 (statement -> CONTINUE ; .)
-    (               reduce using rule 53 (statement -> CONTINUE ; .)
-    NOT             reduce using rule 53 (statement -> CONTINUE ; .)
-    MINUS           reduce using rule 53 (statement -> CONTINUE ; .)
-    $end            reduce using rule 53 (statement -> CONTINUE ; .)
-    }               reduce using rule 53 (statement -> CONTINUE ; .)
-    ELSE            reduce using rule 53 (statement -> CONTINUE ; .)
+    (54) statement -> CONTINUE ; .
+    FUNCTION        reduce using rule 54 (statement -> CONTINUE ; .)
+    {               reduce using rule 54 (statement -> CONTINUE ; .)
+    FOR             reduce using rule 54 (statement -> CONTINUE ; .)
+    WHILE           reduce using rule 54 (statement -> CONTINUE ; .)
+    IF              reduce using rule 54 (statement -> CONTINUE ; .)
+    CONTINUE        reduce using rule 54 (statement -> CONTINUE ; .)
+    BREAK           reduce using rule 54 (statement -> CONTINUE ; .)
+    RETURN          reduce using rule 54 (statement -> CONTINUE ; .)
+    PRINT           reduce using rule 54 (statement -> CONTINUE ; .)
+    ZEROS           reduce using rule 54 (statement -> CONTINUE ; .)
+    ONES            reduce using rule 54 (statement -> CONTINUE ; .)
+    EYE             reduce using rule 54 (statement -> CONTINUE ; .)
+    STRING          reduce using rule 54 (statement -> CONTINUE ; .)
+    FLOAT_NUMBER    reduce using rule 54 (statement -> CONTINUE ; .)
+    INT_NUMBER      reduce using rule 54 (statement -> CONTINUE ; .)
+    ID              reduce using rule 54 (statement -> CONTINUE ; .)
+    (               reduce using rule 54 (statement -> CONTINUE ; .)
+    NOT             reduce using rule 54 (statement -> CONTINUE ; .)
+    MINUS           reduce using rule 54 (statement -> CONTINUE ; .)
+    $end            reduce using rule 54 (statement -> CONTINUE ; .)
+    }               reduce using rule 54 (statement -> CONTINUE ; .)
+    ELSE            reduce using rule 54 (statement -> CONTINUE ; .)
 
 
 state 65
 
-    (54) statement -> BREAK ; .
-    FUNCTION        reduce using rule 54 (statement -> BREAK ; .)
-    {               reduce using rule 54 (statement -> BREAK ; .)
-    FOR             reduce using rule 54 (statement -> BREAK ; .)
-    WHILE           reduce using rule 54 (statement -> BREAK ; .)
-    IF              reduce using rule 54 (statement -> BREAK ; .)
-    CONTINUE        reduce using rule 54 (statement -> BREAK ; .)
-    BREAK           reduce using rule 54 (statement -> BREAK ; .)
-    RETURN          reduce using rule 54 (statement -> BREAK ; .)
-    PRINT           reduce using rule 54 (statement -> BREAK ; .)
-    ZEROS           reduce using rule 54 (statement -> BREAK ; .)
-    ONES            reduce using rule 54 (statement -> BREAK ; .)
-    EYE             reduce using rule 54 (statement -> BREAK ; .)
-    STRING          reduce using rule 54 (statement -> BREAK ; .)
-    FLOAT_NUMBER    reduce using rule 54 (statement -> BREAK ; .)
-    INT_NUMBER      reduce using rule 54 (statement -> BREAK ; .)
-    ID              reduce using rule 54 (statement -> BREAK ; .)
-    (               reduce using rule 54 (statement -> BREAK ; .)
-    NOT             reduce using rule 54 (statement -> BREAK ; .)
-    MINUS           reduce using rule 54 (statement -> BREAK ; .)
-    $end            reduce using rule 54 (statement -> BREAK ; .)
-    }               reduce using rule 54 (statement -> BREAK ; .)
-    ELSE            reduce using rule 54 (statement -> BREAK ; .)
+    (55) statement -> BREAK ; .
+    FUNCTION        reduce using rule 55 (statement -> BREAK ; .)
+    {               reduce using rule 55 (statement -> BREAK ; .)
+    FOR             reduce using rule 55 (statement -> BREAK ; .)
+    WHILE           reduce using rule 55 (statement -> BREAK ; .)
+    IF              reduce using rule 55 (statement -> BREAK ; .)
+    CONTINUE        reduce using rule 55 (statement -> BREAK ; .)
+    BREAK           reduce using rule 55 (statement -> BREAK ; .)
+    RETURN          reduce using rule 55 (statement -> BREAK ; .)
+    PRINT           reduce using rule 55 (statement -> BREAK ; .)
+    ZEROS           reduce using rule 55 (statement -> BREAK ; .)
+    ONES            reduce using rule 55 (statement -> BREAK ; .)
+    EYE             reduce using rule 55 (statement -> BREAK ; .)
+    STRING          reduce using rule 55 (statement -> BREAK ; .)
+    FLOAT_NUMBER    reduce using rule 55 (statement -> BREAK ; .)
+    INT_NUMBER      reduce using rule 55 (statement -> BREAK ; .)
+    ID              reduce using rule 55 (statement -> BREAK ; .)
+    (               reduce using rule 55 (statement -> BREAK ; .)
+    NOT             reduce using rule 55 (statement -> BREAK ; .)
+    MINUS           reduce using rule 55 (statement -> BREAK ; .)
+    $end            reduce using rule 55 (statement -> BREAK ; .)
+    }               reduce using rule 55 (statement -> BREAK ; .)
+    ELSE            reduce using rule 55 (statement -> BREAK ; .)
 
 
 state 66
 
-    (55) statement -> RETURN expr . ;
+    (56) statement -> RETURN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3028,7 +3035,7 @@ state 66
 
 state 67
 
-    (56) statement -> PRINT expr . ;
+    (57) statement -> PRINT expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3084,6 +3091,7 @@ state 68
     (9) expr -> ZEROS ( . parameter_list )
     (40) parameter_list -> . expr
     (41) parameter_list -> . parameter_list , expr
+    (42) parameter_list -> .
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -3118,6 +3126,8 @@ state 68
     (37) expr -> . expr TIMES expr
     (38) expr -> . expr MINUS expr
     (39) expr -> . expr PLUS expr
+    )               reduce using rule 42 (parameter_list -> .)
+    ,               reduce using rule 42 (parameter_list -> .)
     ZEROS           shift and go to state 17
     ONES            shift and go to state 18
     EYE             shift and go to state 19
@@ -3137,6 +3147,7 @@ state 69
     (10) expr -> ONES ( . parameter_list )
     (40) parameter_list -> . expr
     (41) parameter_list -> . parameter_list , expr
+    (42) parameter_list -> .
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -3171,6 +3182,8 @@ state 69
     (37) expr -> . expr TIMES expr
     (38) expr -> . expr MINUS expr
     (39) expr -> . expr PLUS expr
+    )               reduce using rule 42 (parameter_list -> .)
+    ,               reduce using rule 42 (parameter_list -> .)
     ZEROS           shift and go to state 17
     ONES            shift and go to state 18
     EYE             shift and go to state 19
@@ -3190,6 +3203,7 @@ state 70
     (11) expr -> EYE ( . parameter_list )
     (40) parameter_list -> . expr
     (41) parameter_list -> . parameter_list , expr
+    (42) parameter_list -> .
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -3224,6 +3238,8 @@ state 70
     (37) expr -> . expr TIMES expr
     (38) expr -> . expr MINUS expr
     (39) expr -> . expr PLUS expr
+    )               reduce using rule 42 (parameter_list -> .)
+    ,               reduce using rule 42 (parameter_list -> .)
     ZEROS           shift and go to state 17
     ONES            shift and go to state 18
     EYE             shift and go to state 19
@@ -3400,7 +3416,7 @@ state 72
 
 state 73
 
-    (47) statement -> expr REMAINDER_ASSIGN expr . ;
+    (48) statement -> expr REMAINDER_ASSIGN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3453,7 +3469,7 @@ state 73
 
 state 74
 
-    (48) statement -> expr DIVIDE_ASSIGN expr . ;
+    (49) statement -> expr DIVIDE_ASSIGN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3506,7 +3522,7 @@ state 74
 
 state 75
 
-    (49) statement -> expr TIMES_ASSIGN expr . ;
+    (50) statement -> expr TIMES_ASSIGN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3559,7 +3575,7 @@ state 75
 
 state 76
 
-    (50) statement -> expr MINUS_ASSIGN expr . ;
+    (51) statement -> expr MINUS_ASSIGN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3612,7 +3628,7 @@ state 76
 
 state 77
 
-    (51) statement -> expr PLUS_ASSIGN expr . ;
+    (52) statement -> expr PLUS_ASSIGN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -3665,7 +3681,7 @@ state 77
 
 state 78
 
-    (52) statement -> expr ASSIGN expr . ;
+    (53) statement -> expr ASSIGN expr . ;
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -5445,10 +5461,11 @@ state 102
 
 state 103
 
-    (60) function -> FUNCTION ID ( . ) statement
-    (61) function -> FUNCTION ID ( . parameter_list ) statement
+    (61) function -> FUNCTION ID ( . ) statement
+    (62) function -> FUNCTION ID ( . parameter_list ) statement
     (40) parameter_list -> . expr
     (41) parameter_list -> . parameter_list , expr
+    (42) parameter_list -> .
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -5483,7 +5500,9 @@ state 103
     (37) expr -> . expr TIMES expr
     (38) expr -> . expr MINUS expr
     (39) expr -> . expr PLUS expr
+  ! shift/reduce conflict for ) resolved as shift
     )               shift and go to state 124
+    ,               reduce using rule 42 (parameter_list -> .)
     ZEROS           shift and go to state 17
     ONES            shift and go to state 18
     EYE             shift and go to state 19
@@ -5556,64 +5575,64 @@ state 104
 
 state 105
 
-    (42) statement -> { statement_series } .
-    FUNCTION        reduce using rule 42 (statement -> { statement_series } .)
-    {               reduce using rule 42 (statement -> { statement_series } .)
-    FOR             reduce using rule 42 (statement -> { statement_series } .)
-    WHILE           reduce using rule 42 (statement -> { statement_series } .)
-    IF              reduce using rule 42 (statement -> { statement_series } .)
-    CONTINUE        reduce using rule 42 (statement -> { statement_series } .)
-    BREAK           reduce using rule 42 (statement -> { statement_series } .)
-    RETURN          reduce using rule 42 (statement -> { statement_series } .)
-    PRINT           reduce using rule 42 (statement -> { statement_series } .)
-    ZEROS           reduce using rule 42 (statement -> { statement_series } .)
-    ONES            reduce using rule 42 (statement -> { statement_series } .)
-    EYE             reduce using rule 42 (statement -> { statement_series } .)
-    STRING          reduce using rule 42 (statement -> { statement_series } .)
-    FLOAT_NUMBER    reduce using rule 42 (statement -> { statement_series } .)
-    INT_NUMBER      reduce using rule 42 (statement -> { statement_series } .)
-    ID              reduce using rule 42 (statement -> { statement_series } .)
-    (               reduce using rule 42 (statement -> { statement_series } .)
-    NOT             reduce using rule 42 (statement -> { statement_series } .)
-    MINUS           reduce using rule 42 (statement -> { statement_series } .)
-    $end            reduce using rule 42 (statement -> { statement_series } .)
-    }               reduce using rule 42 (statement -> { statement_series } .)
-    ELSE            reduce using rule 42 (statement -> { statement_series } .)
+    (43) statement -> { statement_series } .
+    FUNCTION        reduce using rule 43 (statement -> { statement_series } .)
+    {               reduce using rule 43 (statement -> { statement_series } .)
+    FOR             reduce using rule 43 (statement -> { statement_series } .)
+    WHILE           reduce using rule 43 (statement -> { statement_series } .)
+    IF              reduce using rule 43 (statement -> { statement_series } .)
+    CONTINUE        reduce using rule 43 (statement -> { statement_series } .)
+    BREAK           reduce using rule 43 (statement -> { statement_series } .)
+    RETURN          reduce using rule 43 (statement -> { statement_series } .)
+    PRINT           reduce using rule 43 (statement -> { statement_series } .)
+    ZEROS           reduce using rule 43 (statement -> { statement_series } .)
+    ONES            reduce using rule 43 (statement -> { statement_series } .)
+    EYE             reduce using rule 43 (statement -> { statement_series } .)
+    STRING          reduce using rule 43 (statement -> { statement_series } .)
+    FLOAT_NUMBER    reduce using rule 43 (statement -> { statement_series } .)
+    INT_NUMBER      reduce using rule 43 (statement -> { statement_series } .)
+    ID              reduce using rule 43 (statement -> { statement_series } .)
+    (               reduce using rule 43 (statement -> { statement_series } .)
+    NOT             reduce using rule 43 (statement -> { statement_series } .)
+    MINUS           reduce using rule 43 (statement -> { statement_series } .)
+    $end            reduce using rule 43 (statement -> { statement_series } .)
+    }               reduce using rule 43 (statement -> { statement_series } .)
+    ELSE            reduce using rule 43 (statement -> { statement_series } .)
 
 
 state 106
 
-    (58) statement_series -> statement_series statement .
-    }               reduce using rule 58 (statement_series -> statement_series statement .)
-    {               reduce using rule 58 (statement_series -> statement_series statement .)
-    FOR             reduce using rule 58 (statement_series -> statement_series statement .)
-    WHILE           reduce using rule 58 (statement_series -> statement_series statement .)
-    IF              reduce using rule 58 (statement_series -> statement_series statement .)
-    CONTINUE        reduce using rule 58 (statement_series -> statement_series statement .)
-    BREAK           reduce using rule 58 (statement_series -> statement_series statement .)
-    RETURN          reduce using rule 58 (statement_series -> statement_series statement .)
-    PRINT           reduce using rule 58 (statement_series -> statement_series statement .)
-    ZEROS           reduce using rule 58 (statement_series -> statement_series statement .)
-    ONES            reduce using rule 58 (statement_series -> statement_series statement .)
-    EYE             reduce using rule 58 (statement_series -> statement_series statement .)
-    STRING          reduce using rule 58 (statement_series -> statement_series statement .)
-    FLOAT_NUMBER    reduce using rule 58 (statement_series -> statement_series statement .)
-    INT_NUMBER      reduce using rule 58 (statement_series -> statement_series statement .)
-    ID              reduce using rule 58 (statement_series -> statement_series statement .)
-    (               reduce using rule 58 (statement_series -> statement_series statement .)
-    NOT             reduce using rule 58 (statement_series -> statement_series statement .)
-    MINUS           reduce using rule 58 (statement_series -> statement_series statement .)
+    (59) statement_series -> statement_series statement .
+    }               reduce using rule 59 (statement_series -> statement_series statement .)
+    {               reduce using rule 59 (statement_series -> statement_series statement .)
+    FOR             reduce using rule 59 (statement_series -> statement_series statement .)
+    WHILE           reduce using rule 59 (statement_series -> statement_series statement .)
+    IF              reduce using rule 59 (statement_series -> statement_series statement .)
+    CONTINUE        reduce using rule 59 (statement_series -> statement_series statement .)
+    BREAK           reduce using rule 59 (statement_series -> statement_series statement .)
+    RETURN          reduce using rule 59 (statement_series -> statement_series statement .)
+    PRINT           reduce using rule 59 (statement_series -> statement_series statement .)
+    ZEROS           reduce using rule 59 (statement_series -> statement_series statement .)
+    ONES            reduce using rule 59 (statement_series -> statement_series statement .)
+    EYE             reduce using rule 59 (statement_series -> statement_series statement .)
+    STRING          reduce using rule 59 (statement_series -> statement_series statement .)
+    FLOAT_NUMBER    reduce using rule 59 (statement_series -> statement_series statement .)
+    INT_NUMBER      reduce using rule 59 (statement_series -> statement_series statement .)
+    ID              reduce using rule 59 (statement_series -> statement_series statement .)
+    (               reduce using rule 59 (statement_series -> statement_series statement .)
+    NOT             reduce using rule 59 (statement_series -> statement_series statement .)
+    MINUS           reduce using rule 59 (statement_series -> statement_series statement .)
 
 
 state 107
 
-    (43) statement -> FOR ( ID . IN expr ) statement
+    (44) statement -> FOR ( ID . IN expr ) statement
     IN              shift and go to state 126
 
 
 state 108
 
-    (44) statement -> WHILE ( expr . ) statement
+    (45) statement -> WHILE ( expr . ) statement
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -5666,8 +5685,8 @@ state 108
 
 state 109
 
-    (45) statement -> IF ( expr . ) statement ELSE statement
-    (46) statement -> IF ( expr . ) statement
+    (46) statement -> IF ( expr . ) statement ELSE statement
+    (47) statement -> IF ( expr . ) statement
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -5720,56 +5739,56 @@ state 109
 
 state 110
 
-    (55) statement -> RETURN expr ; .
-    FUNCTION        reduce using rule 55 (statement -> RETURN expr ; .)
-    {               reduce using rule 55 (statement -> RETURN expr ; .)
-    FOR             reduce using rule 55 (statement -> RETURN expr ; .)
-    WHILE           reduce using rule 55 (statement -> RETURN expr ; .)
-    IF              reduce using rule 55 (statement -> RETURN expr ; .)
-    CONTINUE        reduce using rule 55 (statement -> RETURN expr ; .)
-    BREAK           reduce using rule 55 (statement -> RETURN expr ; .)
-    RETURN          reduce using rule 55 (statement -> RETURN expr ; .)
-    PRINT           reduce using rule 55 (statement -> RETURN expr ; .)
-    ZEROS           reduce using rule 55 (statement -> RETURN expr ; .)
-    ONES            reduce using rule 55 (statement -> RETURN expr ; .)
-    EYE             reduce using rule 55 (statement -> RETURN expr ; .)
-    STRING          reduce using rule 55 (statement -> RETURN expr ; .)
-    FLOAT_NUMBER    reduce using rule 55 (statement -> RETURN expr ; .)
-    INT_NUMBER      reduce using rule 55 (statement -> RETURN expr ; .)
-    ID              reduce using rule 55 (statement -> RETURN expr ; .)
-    (               reduce using rule 55 (statement -> RETURN expr ; .)
-    NOT             reduce using rule 55 (statement -> RETURN expr ; .)
-    MINUS           reduce using rule 55 (statement -> RETURN expr ; .)
-    $end            reduce using rule 55 (statement -> RETURN expr ; .)
-    }               reduce using rule 55 (statement -> RETURN expr ; .)
-    ELSE            reduce using rule 55 (statement -> RETURN expr ; .)
+    (56) statement -> RETURN expr ; .
+    FUNCTION        reduce using rule 56 (statement -> RETURN expr ; .)
+    {               reduce using rule 56 (statement -> RETURN expr ; .)
+    FOR             reduce using rule 56 (statement -> RETURN expr ; .)
+    WHILE           reduce using rule 56 (statement -> RETURN expr ; .)
+    IF              reduce using rule 56 (statement -> RETURN expr ; .)
+    CONTINUE        reduce using rule 56 (statement -> RETURN expr ; .)
+    BREAK           reduce using rule 56 (statement -> RETURN expr ; .)
+    RETURN          reduce using rule 56 (statement -> RETURN expr ; .)
+    PRINT           reduce using rule 56 (statement -> RETURN expr ; .)
+    ZEROS           reduce using rule 56 (statement -> RETURN expr ; .)
+    ONES            reduce using rule 56 (statement -> RETURN expr ; .)
+    EYE             reduce using rule 56 (statement -> RETURN expr ; .)
+    STRING          reduce using rule 56 (statement -> RETURN expr ; .)
+    FLOAT_NUMBER    reduce using rule 56 (statement -> RETURN expr ; .)
+    INT_NUMBER      reduce using rule 56 (statement -> RETURN expr ; .)
+    ID              reduce using rule 56 (statement -> RETURN expr ; .)
+    (               reduce using rule 56 (statement -> RETURN expr ; .)
+    NOT             reduce using rule 56 (statement -> RETURN expr ; .)
+    MINUS           reduce using rule 56 (statement -> RETURN expr ; .)
+    $end            reduce using rule 56 (statement -> RETURN expr ; .)
+    }               reduce using rule 56 (statement -> RETURN expr ; .)
+    ELSE            reduce using rule 56 (statement -> RETURN expr ; .)
 
 
 state 111
 
-    (56) statement -> PRINT expr ; .
-    FUNCTION        reduce using rule 56 (statement -> PRINT expr ; .)
-    {               reduce using rule 56 (statement -> PRINT expr ; .)
-    FOR             reduce using rule 56 (statement -> PRINT expr ; .)
-    WHILE           reduce using rule 56 (statement -> PRINT expr ; .)
-    IF              reduce using rule 56 (statement -> PRINT expr ; .)
-    CONTINUE        reduce using rule 56 (statement -> PRINT expr ; .)
-    BREAK           reduce using rule 56 (statement -> PRINT expr ; .)
-    RETURN          reduce using rule 56 (statement -> PRINT expr ; .)
-    PRINT           reduce using rule 56 (statement -> PRINT expr ; .)
-    ZEROS           reduce using rule 56 (statement -> PRINT expr ; .)
-    ONES            reduce using rule 56 (statement -> PRINT expr ; .)
-    EYE             reduce using rule 56 (statement -> PRINT expr ; .)
-    STRING          reduce using rule 56 (statement -> PRINT expr ; .)
-    FLOAT_NUMBER    reduce using rule 56 (statement -> PRINT expr ; .)
-    INT_NUMBER      reduce using rule 56 (statement -> PRINT expr ; .)
-    ID              reduce using rule 56 (statement -> PRINT expr ; .)
-    (               reduce using rule 56 (statement -> PRINT expr ; .)
-    NOT             reduce using rule 56 (statement -> PRINT expr ; .)
-    MINUS           reduce using rule 56 (statement -> PRINT expr ; .)
-    $end            reduce using rule 56 (statement -> PRINT expr ; .)
-    }               reduce using rule 56 (statement -> PRINT expr ; .)
-    ELSE            reduce using rule 56 (statement -> PRINT expr ; .)
+    (57) statement -> PRINT expr ; .
+    FUNCTION        reduce using rule 57 (statement -> PRINT expr ; .)
+    {               reduce using rule 57 (statement -> PRINT expr ; .)
+    FOR             reduce using rule 57 (statement -> PRINT expr ; .)
+    WHILE           reduce using rule 57 (statement -> PRINT expr ; .)
+    IF              reduce using rule 57 (statement -> PRINT expr ; .)
+    CONTINUE        reduce using rule 57 (statement -> PRINT expr ; .)
+    BREAK           reduce using rule 57 (statement -> PRINT expr ; .)
+    RETURN          reduce using rule 57 (statement -> PRINT expr ; .)
+    PRINT           reduce using rule 57 (statement -> PRINT expr ; .)
+    ZEROS           reduce using rule 57 (statement -> PRINT expr ; .)
+    ONES            reduce using rule 57 (statement -> PRINT expr ; .)
+    EYE             reduce using rule 57 (statement -> PRINT expr ; .)
+    STRING          reduce using rule 57 (statement -> PRINT expr ; .)
+    FLOAT_NUMBER    reduce using rule 57 (statement -> PRINT expr ; .)
+    INT_NUMBER      reduce using rule 57 (statement -> PRINT expr ; .)
+    ID              reduce using rule 57 (statement -> PRINT expr ; .)
+    (               reduce using rule 57 (statement -> PRINT expr ; .)
+    NOT             reduce using rule 57 (statement -> PRINT expr ; .)
+    MINUS           reduce using rule 57 (statement -> PRINT expr ; .)
+    $end            reduce using rule 57 (statement -> PRINT expr ; .)
+    }               reduce using rule 57 (statement -> PRINT expr ; .)
+    ELSE            reduce using rule 57 (statement -> PRINT expr ; .)
 
 
 state 112
@@ -5798,164 +5817,164 @@ state 114
 
 state 115
 
-    (47) statement -> expr REMAINDER_ASSIGN expr ; .
-    FUNCTION        reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    {               reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    FOR             reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    WHILE           reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    IF              reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    CONTINUE        reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    BREAK           reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    RETURN          reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    PRINT           reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    ZEROS           reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    ONES            reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    EYE             reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    STRING          reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    FLOAT_NUMBER    reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    INT_NUMBER      reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    ID              reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    (               reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    NOT             reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    MINUS           reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    $end            reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    }               reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
-    ELSE            reduce using rule 47 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    (48) statement -> expr REMAINDER_ASSIGN expr ; .
+    FUNCTION        reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    {               reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    FOR             reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    WHILE           reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    IF              reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    CONTINUE        reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    BREAK           reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    RETURN          reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    PRINT           reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    ZEROS           reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    ONES            reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    EYE             reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    STRING          reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    FLOAT_NUMBER    reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    INT_NUMBER      reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    ID              reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    (               reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    NOT             reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    MINUS           reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    $end            reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    }               reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
+    ELSE            reduce using rule 48 (statement -> expr REMAINDER_ASSIGN expr ; .)
 
 
 state 116
 
-    (48) statement -> expr DIVIDE_ASSIGN expr ; .
-    FUNCTION        reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    {               reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    FOR             reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    WHILE           reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    IF              reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    CONTINUE        reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    BREAK           reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    RETURN          reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    PRINT           reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    ZEROS           reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    ONES            reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    EYE             reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    STRING          reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    FLOAT_NUMBER    reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    INT_NUMBER      reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    ID              reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    (               reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    NOT             reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    MINUS           reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    $end            reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    }               reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
-    ELSE            reduce using rule 48 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    (49) statement -> expr DIVIDE_ASSIGN expr ; .
+    FUNCTION        reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    {               reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    FOR             reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    WHILE           reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    IF              reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    CONTINUE        reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    BREAK           reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    RETURN          reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    PRINT           reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    ZEROS           reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    ONES            reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    EYE             reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    STRING          reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    FLOAT_NUMBER    reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    INT_NUMBER      reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    ID              reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    (               reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    NOT             reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    MINUS           reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    $end            reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    }               reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
+    ELSE            reduce using rule 49 (statement -> expr DIVIDE_ASSIGN expr ; .)
 
 
 state 117
 
-    (49) statement -> expr TIMES_ASSIGN expr ; .
-    FUNCTION        reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    {               reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    FOR             reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    WHILE           reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    IF              reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    CONTINUE        reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    BREAK           reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    RETURN          reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    PRINT           reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    ZEROS           reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    ONES            reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    EYE             reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    STRING          reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    FLOAT_NUMBER    reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    INT_NUMBER      reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    ID              reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    (               reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    NOT             reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    MINUS           reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    $end            reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    }               reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
-    ELSE            reduce using rule 49 (statement -> expr TIMES_ASSIGN expr ; .)
+    (50) statement -> expr TIMES_ASSIGN expr ; .
+    FUNCTION        reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    {               reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    FOR             reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    WHILE           reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    IF              reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    CONTINUE        reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    BREAK           reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    RETURN          reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    PRINT           reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    ZEROS           reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    ONES            reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    EYE             reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    STRING          reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    FLOAT_NUMBER    reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    INT_NUMBER      reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    ID              reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    (               reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    NOT             reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    MINUS           reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    $end            reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    }               reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
+    ELSE            reduce using rule 50 (statement -> expr TIMES_ASSIGN expr ; .)
 
 
 state 118
 
-    (50) statement -> expr MINUS_ASSIGN expr ; .
-    FUNCTION        reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    {               reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    FOR             reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    WHILE           reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    IF              reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    CONTINUE        reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    BREAK           reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    RETURN          reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    PRINT           reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    ZEROS           reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    ONES            reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    EYE             reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    STRING          reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    FLOAT_NUMBER    reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    INT_NUMBER      reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    ID              reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    (               reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    NOT             reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    MINUS           reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    $end            reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    }               reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
-    ELSE            reduce using rule 50 (statement -> expr MINUS_ASSIGN expr ; .)
+    (51) statement -> expr MINUS_ASSIGN expr ; .
+    FUNCTION        reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    {               reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    FOR             reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    WHILE           reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    IF              reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    CONTINUE        reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    BREAK           reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    RETURN          reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    PRINT           reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    ZEROS           reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    ONES            reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    EYE             reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    STRING          reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    FLOAT_NUMBER    reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    INT_NUMBER      reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    ID              reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    (               reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    NOT             reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    MINUS           reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    $end            reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    }               reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
+    ELSE            reduce using rule 51 (statement -> expr MINUS_ASSIGN expr ; .)
 
 
 state 119
 
-    (51) statement -> expr PLUS_ASSIGN expr ; .
-    FUNCTION        reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    {               reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    FOR             reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    WHILE           reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    IF              reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    CONTINUE        reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    BREAK           reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    RETURN          reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    PRINT           reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    ZEROS           reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    ONES            reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    EYE             reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    STRING          reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    FLOAT_NUMBER    reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    INT_NUMBER      reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    ID              reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    (               reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    NOT             reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    MINUS           reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    $end            reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    }               reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
-    ELSE            reduce using rule 51 (statement -> expr PLUS_ASSIGN expr ; .)
+    (52) statement -> expr PLUS_ASSIGN expr ; .
+    FUNCTION        reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    {               reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    FOR             reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    WHILE           reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    IF              reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    CONTINUE        reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    BREAK           reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    RETURN          reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    PRINT           reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    ZEROS           reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    ONES            reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    EYE             reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    STRING          reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    FLOAT_NUMBER    reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    INT_NUMBER      reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    ID              reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    (               reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    NOT             reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    MINUS           reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    $end            reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    }               reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
+    ELSE            reduce using rule 52 (statement -> expr PLUS_ASSIGN expr ; .)
 
 
 state 120
 
-    (52) statement -> expr ASSIGN expr ; .
-    FUNCTION        reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    {               reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    FOR             reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    WHILE           reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    IF              reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    CONTINUE        reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    BREAK           reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    RETURN          reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    PRINT           reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    ZEROS           reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    ONES            reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    EYE             reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    STRING          reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    FLOAT_NUMBER    reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    INT_NUMBER      reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    ID              reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    (               reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    NOT             reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    MINUS           reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    $end            reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    }               reduce using rule 52 (statement -> expr ASSIGN expr ; .)
-    ELSE            reduce using rule 52 (statement -> expr ASSIGN expr ; .)
+    (53) statement -> expr ASSIGN expr ; .
+    FUNCTION        reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    {               reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    FOR             reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    WHILE           reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    IF              reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    CONTINUE        reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    BREAK           reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    RETURN          reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    PRINT           reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    ZEROS           reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    ONES            reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    EYE             reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    STRING          reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    FLOAT_NUMBER    reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    INT_NUMBER      reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    ID              reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    (               reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    NOT             reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    MINUS           reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    $end            reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    }               reduce using rule 53 (statement -> expr ASSIGN expr ; .)
+    ELSE            reduce using rule 53 (statement -> expr ASSIGN expr ; .)
 
 
 state 121
@@ -6122,23 +6141,23 @@ state 123
 
 state 124
 
-    (60) function -> FUNCTION ID ( ) . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (61) function -> FUNCTION ID ( ) . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -6197,7 +6216,7 @@ state 124
 
 state 125
 
-    (61) function -> FUNCTION ID ( parameter_list . ) statement
+    (62) function -> FUNCTION ID ( parameter_list . ) statement
     (41) parameter_list -> parameter_list . , expr
     )               shift and go to state 134
     ,               shift and go to state 122
@@ -6205,7 +6224,7 @@ state 125
 
 state 126
 
-    (43) statement -> FOR ( ID IN . expr ) statement
+    (44) statement -> FOR ( ID IN . expr ) statement
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -6255,23 +6274,23 @@ state 126
 
 state 127
 
-    (44) statement -> WHILE ( expr ) . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (45) statement -> WHILE ( expr ) . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -6330,24 +6349,24 @@ state 127
 
 state 128
 
-    (45) statement -> IF ( expr ) . statement ELSE statement
-    (46) statement -> IF ( expr ) . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (46) statement -> IF ( expr ) . statement ELSE statement
+    (47) statement -> IF ( expr ) . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -6629,48 +6648,48 @@ state 132
 
 state 133
 
-    (60) function -> FUNCTION ID ( ) statement .
-    FUNCTION        reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    {               reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    FOR             reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    WHILE           reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    IF              reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    CONTINUE        reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    BREAK           reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    RETURN          reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    PRINT           reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    ZEROS           reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    ONES            reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    EYE             reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    STRING          reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    FLOAT_NUMBER    reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    INT_NUMBER      reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    ID              reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    (               reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    NOT             reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    MINUS           reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
-    $end            reduce using rule 60 (function -> FUNCTION ID ( ) statement .)
+    (61) function -> FUNCTION ID ( ) statement .
+    FUNCTION        reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    {               reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    FOR             reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    WHILE           reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    IF              reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    CONTINUE        reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    BREAK           reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    RETURN          reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    PRINT           reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    ZEROS           reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    ONES            reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    EYE             reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    STRING          reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    FLOAT_NUMBER    reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    INT_NUMBER      reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    ID              reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    (               reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    NOT             reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    MINUS           reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
+    $end            reduce using rule 61 (function -> FUNCTION ID ( ) statement .)
 
 
 state 134
 
-    (61) function -> FUNCTION ID ( parameter_list ) . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (62) function -> FUNCTION ID ( parameter_list ) . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -6729,7 +6748,7 @@ state 134
 
 state 135
 
-    (43) statement -> FOR ( ID IN expr . ) statement
+    (44) statement -> FOR ( ID IN expr . ) statement
     (6) expr -> expr . [ parameter_list ]
     (7) expr -> expr . ( )
     (8) expr -> expr . ( parameter_list )
@@ -6782,103 +6801,103 @@ state 135
 
 state 136
 
-    (44) statement -> WHILE ( expr ) statement .
-    FUNCTION        reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    {               reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    FOR             reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    WHILE           reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    IF              reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    CONTINUE        reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    BREAK           reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    RETURN          reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    PRINT           reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    ZEROS           reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    ONES            reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    EYE             reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    STRING          reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    FLOAT_NUMBER    reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    INT_NUMBER      reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    ID              reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    (               reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    NOT             reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    MINUS           reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    $end            reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    }               reduce using rule 44 (statement -> WHILE ( expr ) statement .)
-    ELSE            reduce using rule 44 (statement -> WHILE ( expr ) statement .)
+    (45) statement -> WHILE ( expr ) statement .
+    FUNCTION        reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    {               reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    FOR             reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    WHILE           reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    IF              reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    CONTINUE        reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    BREAK           reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    RETURN          reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    PRINT           reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    ZEROS           reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    ONES            reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    EYE             reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    STRING          reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    FLOAT_NUMBER    reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    INT_NUMBER      reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    ID              reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    (               reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    NOT             reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    MINUS           reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    $end            reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    }               reduce using rule 45 (statement -> WHILE ( expr ) statement .)
+    ELSE            reduce using rule 45 (statement -> WHILE ( expr ) statement .)
 
 
 state 137
 
-    (45) statement -> IF ( expr ) statement . ELSE statement
-    (46) statement -> IF ( expr ) statement .
+    (46) statement -> IF ( expr ) statement . ELSE statement
+    (47) statement -> IF ( expr ) statement .
     ELSE            shift and go to state 140
-    FUNCTION        reduce using rule 46 (statement -> IF ( expr ) statement .)
-    {               reduce using rule 46 (statement -> IF ( expr ) statement .)
-    FOR             reduce using rule 46 (statement -> IF ( expr ) statement .)
-    WHILE           reduce using rule 46 (statement -> IF ( expr ) statement .)
-    IF              reduce using rule 46 (statement -> IF ( expr ) statement .)
-    CONTINUE        reduce using rule 46 (statement -> IF ( expr ) statement .)
-    BREAK           reduce using rule 46 (statement -> IF ( expr ) statement .)
-    RETURN          reduce using rule 46 (statement -> IF ( expr ) statement .)
-    PRINT           reduce using rule 46 (statement -> IF ( expr ) statement .)
-    ZEROS           reduce using rule 46 (statement -> IF ( expr ) statement .)
-    ONES            reduce using rule 46 (statement -> IF ( expr ) statement .)
-    EYE             reduce using rule 46 (statement -> IF ( expr ) statement .)
-    STRING          reduce using rule 46 (statement -> IF ( expr ) statement .)
-    FLOAT_NUMBER    reduce using rule 46 (statement -> IF ( expr ) statement .)
-    INT_NUMBER      reduce using rule 46 (statement -> IF ( expr ) statement .)
-    ID              reduce using rule 46 (statement -> IF ( expr ) statement .)
-    (               reduce using rule 46 (statement -> IF ( expr ) statement .)
-    NOT             reduce using rule 46 (statement -> IF ( expr ) statement .)
-    MINUS           reduce using rule 46 (statement -> IF ( expr ) statement .)
-    $end            reduce using rule 46 (statement -> IF ( expr ) statement .)
-    }               reduce using rule 46 (statement -> IF ( expr ) statement .)
+    FUNCTION        reduce using rule 47 (statement -> IF ( expr ) statement .)
+    {               reduce using rule 47 (statement -> IF ( expr ) statement .)
+    FOR             reduce using rule 47 (statement -> IF ( expr ) statement .)
+    WHILE           reduce using rule 47 (statement -> IF ( expr ) statement .)
+    IF              reduce using rule 47 (statement -> IF ( expr ) statement .)
+    CONTINUE        reduce using rule 47 (statement -> IF ( expr ) statement .)
+    BREAK           reduce using rule 47 (statement -> IF ( expr ) statement .)
+    RETURN          reduce using rule 47 (statement -> IF ( expr ) statement .)
+    PRINT           reduce using rule 47 (statement -> IF ( expr ) statement .)
+    ZEROS           reduce using rule 47 (statement -> IF ( expr ) statement .)
+    ONES            reduce using rule 47 (statement -> IF ( expr ) statement .)
+    EYE             reduce using rule 47 (statement -> IF ( expr ) statement .)
+    STRING          reduce using rule 47 (statement -> IF ( expr ) statement .)
+    FLOAT_NUMBER    reduce using rule 47 (statement -> IF ( expr ) statement .)
+    INT_NUMBER      reduce using rule 47 (statement -> IF ( expr ) statement .)
+    ID              reduce using rule 47 (statement -> IF ( expr ) statement .)
+    (               reduce using rule 47 (statement -> IF ( expr ) statement .)
+    NOT             reduce using rule 47 (statement -> IF ( expr ) statement .)
+    MINUS           reduce using rule 47 (statement -> IF ( expr ) statement .)
+    $end            reduce using rule 47 (statement -> IF ( expr ) statement .)
+    }               reduce using rule 47 (statement -> IF ( expr ) statement .)
 
 
 state 138
 
-    (61) function -> FUNCTION ID ( parameter_list ) statement .
-    FUNCTION        reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    {               reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    FOR             reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    WHILE           reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    IF              reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    CONTINUE        reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    BREAK           reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    RETURN          reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    PRINT           reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    ZEROS           reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    ONES            reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    EYE             reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    STRING          reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    FLOAT_NUMBER    reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    INT_NUMBER      reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    ID              reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    (               reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    NOT             reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    MINUS           reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
-    $end            reduce using rule 61 (function -> FUNCTION ID ( parameter_list ) statement .)
+    (62) function -> FUNCTION ID ( parameter_list ) statement .
+    FUNCTION        reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    {               reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    FOR             reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    WHILE           reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    IF              reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    CONTINUE        reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    BREAK           reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    RETURN          reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    PRINT           reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    ZEROS           reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    ONES            reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    EYE             reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    STRING          reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    FLOAT_NUMBER    reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    INT_NUMBER      reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    ID              reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    (               reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    NOT             reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    MINUS           reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
+    $end            reduce using rule 62 (function -> FUNCTION ID ( parameter_list ) statement .)
 
 
 state 139
 
-    (43) statement -> FOR ( ID IN expr ) . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (44) statement -> FOR ( ID IN expr ) . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -6937,23 +6956,23 @@ state 139
 
 state 140
 
-    (45) statement -> IF ( expr ) statement ELSE . statement
-    (42) statement -> . { statement_series }
-    (43) statement -> . FOR ( ID IN expr ) statement
-    (44) statement -> . WHILE ( expr ) statement
-    (45) statement -> . IF ( expr ) statement ELSE statement
-    (46) statement -> . IF ( expr ) statement
-    (47) statement -> . expr REMAINDER_ASSIGN expr ;
-    (48) statement -> . expr DIVIDE_ASSIGN expr ;
-    (49) statement -> . expr TIMES_ASSIGN expr ;
-    (50) statement -> . expr MINUS_ASSIGN expr ;
-    (51) statement -> . expr PLUS_ASSIGN expr ;
-    (52) statement -> . expr ASSIGN expr ;
-    (53) statement -> . CONTINUE ;
-    (54) statement -> . BREAK ;
-    (55) statement -> . RETURN expr ;
-    (56) statement -> . PRINT expr ;
-    (57) statement -> . expr ;
+    (46) statement -> IF ( expr ) statement ELSE . statement
+    (43) statement -> . { statement_series }
+    (44) statement -> . FOR ( ID IN expr ) statement
+    (45) statement -> . WHILE ( expr ) statement
+    (46) statement -> . IF ( expr ) statement ELSE statement
+    (47) statement -> . IF ( expr ) statement
+    (48) statement -> . expr REMAINDER_ASSIGN expr ;
+    (49) statement -> . expr DIVIDE_ASSIGN expr ;
+    (50) statement -> . expr TIMES_ASSIGN expr ;
+    (51) statement -> . expr MINUS_ASSIGN expr ;
+    (52) statement -> . expr PLUS_ASSIGN expr ;
+    (53) statement -> . expr ASSIGN expr ;
+    (54) statement -> . CONTINUE ;
+    (55) statement -> . BREAK ;
+    (56) statement -> . RETURN expr ;
+    (57) statement -> . PRINT expr ;
+    (58) statement -> . expr ;
     (6) expr -> . expr [ parameter_list ]
     (7) expr -> . expr ( )
     (8) expr -> . expr ( parameter_list )
@@ -7012,59 +7031,61 @@ state 140
 
 state 141
 
-    (43) statement -> FOR ( ID IN expr ) statement .
-    FUNCTION        reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    {               reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    FOR             reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    WHILE           reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    IF              reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    CONTINUE        reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    BREAK           reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    RETURN          reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    PRINT           reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    ZEROS           reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    ONES            reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    EYE             reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    STRING          reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    FLOAT_NUMBER    reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    INT_NUMBER      reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    ID              reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    (               reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    NOT             reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    MINUS           reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    $end            reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    }               reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
-    ELSE            reduce using rule 43 (statement -> FOR ( ID IN expr ) statement .)
+    (44) statement -> FOR ( ID IN expr ) statement .
+    FUNCTION        reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    {               reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    FOR             reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    WHILE           reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    IF              reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    CONTINUE        reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    BREAK           reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    RETURN          reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    PRINT           reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    ZEROS           reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    ONES            reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    EYE             reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    STRING          reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    FLOAT_NUMBER    reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    INT_NUMBER      reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    ID              reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    (               reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    NOT             reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    MINUS           reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    $end            reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    }               reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
+    ELSE            reduce using rule 44 (statement -> FOR ( ID IN expr ) statement .)
 
 
 state 142
 
-    (45) statement -> IF ( expr ) statement ELSE statement .
-    FUNCTION        reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    {               reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    FOR             reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    WHILE           reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    IF              reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    CONTINUE        reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    BREAK           reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    RETURN          reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    PRINT           reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    ZEROS           reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    ONES            reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    EYE             reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    STRING          reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    FLOAT_NUMBER    reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    INT_NUMBER      reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    ID              reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    (               reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    NOT             reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    MINUS           reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    $end            reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    }               reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
-    ELSE            reduce using rule 45 (statement -> IF ( expr ) statement ELSE statement .)
+    (46) statement -> IF ( expr ) statement ELSE statement .
+    FUNCTION        reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    {               reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    FOR             reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    WHILE           reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    IF              reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    CONTINUE        reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    BREAK           reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    RETURN          reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    PRINT           reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    ZEROS           reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    ONES            reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    EYE             reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    STRING          reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    FLOAT_NUMBER    reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    INT_NUMBER      reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    ID              reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    (               reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    NOT             reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    MINUS           reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    $end            reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    }               reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
+    ELSE            reduce using rule 46 (statement -> IF ( expr ) statement ELSE statement .)
 
 
 Conflicts:
 
 shift/reduce conflict for ( in state 5 resolved as shift
 shift/reduce conflict for MINUS in state 5 resolved as shift
+shift/reduce conflict for ) in state 34 resolved as shift
+shift/reduce conflict for ) in state 103 resolved as shift
