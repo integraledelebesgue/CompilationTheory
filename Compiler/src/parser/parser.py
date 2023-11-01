@@ -17,7 +17,7 @@ class Parser(sly.Parser):
         ('left', TIMES, DIVIDE, REMAINDER, DOT_TIMES, DOT_DIVIDE, DOT_REMAINDER),
         ('right', UMINUS, UNEG),
         ('left', TRANSPOSE),
-        ('left', CALL, SUBSCRIPT),
+        # ('left', CALL, SUBSCRIPT),
         ('nonassoc', SHORT_IF),
         ('nonassoc', ELSE)
     )
@@ -105,9 +105,9 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    @_('')
-    def parameter_list(self, p: Production): # (TODO fix) Shift-reduce conflict
-        return p
+    # @_('')
+    # def parameter_list(self, p: Production): # (TODO fix) Shift-reduce conflict
+    #     return p
 
     @_('parameter_list "," expr')
     def parameter_list(self, p: Production):
@@ -115,6 +115,26 @@ class Parser(sly.Parser):
     
     @_('expr')
     def parameter_list(self, p: Production):
+        return p
+    
+    @_('"[" parameter_list "]"')
+    def vector(self, p: Production):
+        return p
+
+    @_('vector')
+    def vector_list(self, p: Production):
+        return p
+
+    @_('vector_list "," vector')
+    def vector_list(self, p: Production):
+        return p
+
+    @_('"[" vector_list "]"')
+    def matrix(self, p: Production):
+        return p
+    
+    @_('vector', 'matrix')
+    def expr(self, p: Production):
         return p
     
     keyword_expr = [
@@ -127,15 +147,15 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    @_('expr "(" parameter_list ")" %prec CALL') 
+    @_('expr "(" parameter_list ")"') 
     def expr(self, p: Production):
         return p
     
-    @_('expr "(" ")" %prec CALL') 
+    @_('expr "(" ")"') 
     def expr(self, p: Production):
         return p
     
-    @_('expr "[" parameter_list "]" %prec SUBSCRIPT')
+    @_('expr "[" parameter_list "]"')
     def expr(self, p: Production):
         return p
     
@@ -146,8 +166,8 @@ class Parser(sly.Parser):
         return p
 
     parenless_statement = [
-        'PRINT expr ";"',
-        'RETURN expr ";"'
+        'PRINT parameter_list ";"',
+        'RETURN parameter_list ";"'
     ]
 
     @_(*parenless_statement)
@@ -189,6 +209,10 @@ class Parser(sly.Parser):
     def statement(self, p: Production):
         return p
     
+    # @_('FOR ID ASSIGN expr statement')
+    # def statement(self, p: Production):
+    #     return p
+
     @_('FOR "(" ID IN expr ")" statement')
     def statement(self, p: Production):
         return p
