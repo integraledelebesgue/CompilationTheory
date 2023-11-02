@@ -38,12 +38,12 @@ while(k>0) {
 }
 
 
-for i = 1:N
-  for j = i:M
+for (i in 1:N)
+  for (j in i:M)
     print i, j;
  
 
-for i = 1:N {
+for (i in 1:N) {
     if(i<=N/16)
         print i;
     else if(i<=N/8)
