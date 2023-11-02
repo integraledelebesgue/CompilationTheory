@@ -17,7 +17,7 @@ class Parser(sly.Parser):
         ('left', TIMES, DIVIDE, REMAINDER, DOT_TIMES, DOT_DIVIDE, DOT_REMAINDER),
         ('right', UMINUS, UNEG),
         ('left', TRANSPOSE),
-        # ('left', CALL, SUBSCRIPT),
+        ('left', CALL, SUBSCRIPT),  # may be obsolete, deleting considered
         ('nonassoc', SHORT_IF),
         ('nonassoc', ELSE)
     )
@@ -26,22 +26,23 @@ class Parser(sly.Parser):
 
     start = 'program'
 
+    actions = [
+        # 'expr',
+        # 'statement',
+        # 'function'
+        'statement'  # Simple & effective
+    ]
+
+    @_(*actions)
+    def action(self, p: Production):
+        return p
+
     @_('action')
     def program(self, p: Production):
         return p
     
     @_('program action')
     def program(self, p: Production):
-        return p
-    
-    actions = [
-        'expr',
-        'statement',
-        'function'
-    ]
-
-    @_(*actions)
-    def action(self, p: Production):
         return p
 
     #= EXPRESSIONS =#
@@ -105,19 +106,19 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return p
     
-    # @_('')
-    # def parameter_list(self, p: Production): # (TODO fix) Shift-reduce conflict
-    #     return p
+    @_('')
+    def expr_list(self, p: Production): # (TODO fix) Shift-reduce conflict
+        return p
 
-    @_('parameter_list "," expr')
-    def parameter_list(self, p: Production):
+    @_('expr_list "," expr')
+    def expr_list(self, p: Production):
         return p
     
     @_('expr')
-    def parameter_list(self, p: Production):
+    def expr_list(self, p: Production):
         return p
     
-    @_('"[" parameter_list "]"')
+    @_('"[" expr_list "]"')
     def vector(self, p: Production):
         return p
 
@@ -138,25 +139,29 @@ class Parser(sly.Parser):
         return p
     
     keyword_expr = [
-        'EYE "(" parameter_list ")"',
-        'ONES "(" parameter_list ")"',
-        'ZEROS "(" parameter_list ")"',
+        'EYE "(" expr_list ")"',
+        'ONES "(" expr_list ")"',
+        'ZEROS "(" expr_list ")"',
     ]
 
     @_(*keyword_expr)
     def expr(self, p: Production):
         return p
     
-    @_('expr "(" parameter_list ")"') 
+    @_('expr "(" expr_list ")" %prec CALL') 
     def expr(self, p: Production):
         return p
     
-    @_('expr "(" ")"') 
+    @_('expr "[" expr_list "]" %prec SUBSCRIPT')
     def expr(self, p: Production):
         return p
     
-    @_('expr "[" parameter_list "]"')
-    def expr(self, p: Production):
+    #= DEFINITIONS =# 
+
+    # structs etc. belong here
+
+    @_('FUNCTION ID "(" expr_list ")" statement')
+    def function(self, p: Production):
         return p
     
     #= STATEMENTS =#
@@ -164,10 +169,14 @@ class Parser(sly.Parser):
     @_('expr ";"')
     def statement(self, p: Production):
         return p
+    
+    @_('function')
+    def statement(self, p: Production):
+        return p
 
     parenless_statement = [
-        'PRINT parameter_list ";"',
-        'RETURN parameter_list ";"'
+        'PRINT expr_list ";"',
+        'RETURN expr_list ";"'
     ]
 
     @_(*parenless_statement)
@@ -208,10 +217,6 @@ class Parser(sly.Parser):
     @_('WHILE "(" expr ")" statement')
     def statement(self, p: Production):
         return p
-    
-    # @_('FOR ID ASSIGN expr statement')
-    # def statement(self, p: Production):
-    #     return p
 
     @_('FOR "(" ID IN expr ")" statement')
     def statement(self, p: Production):
@@ -228,11 +233,4 @@ class Parser(sly.Parser):
     @_('statement_series statement')
     def statement_series(self, p: Production):
         return p
-    
-    @_('FUNCTION ID "(" parameter_list ")" statement')
-    def function(self, p: Production):
-        return p
-    
-    @_('FUNCTION ID "(" ")" statement')
-    def function(self, p: Production):
-        return p
+
