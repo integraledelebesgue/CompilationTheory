@@ -1,6 +1,7 @@
 import sly
 from sly.lex import Token
-from typing import Any
+from typing import Any, Set
+from functools import cached_property
 
 #= 
 # Ignore all the warnings concerning token constants and '@_'.
@@ -18,6 +19,42 @@ class Lexer(sly.Lexer):
         ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, TIMES_ASSIGN, DIVIDE_ASSIGN, REMAINDER_ASSIGN,
         EQUAL, NOT_EQUAL, GREATER, GREATER_EQUAL, LOWER, LOWER_EQUAL
     }
+
+    @classmethod
+    def binary_operators(cls) -> Set[str]: 
+        return cls.arithmetic_operators() | cls.relational_operators() | cls.logical_operators()
+
+    @classmethod
+    def arithmetic_operators(cls) -> Set[str]:
+        return {
+            cls.PLUS, cls.MINUS, cls.TIMES, cls.DIVIDE, cls.REMAINDER,
+            cls.DOT_PLUS, cls.DOT_MINUS, cls.DOT_TIMES, cls.DOT_DIVIDE, cls.DOT_REMAINDER,
+            ':'
+        }
+
+    @classmethod
+    def logical_operators(cls) -> Set[str]:
+        return {
+            cls.AND, cls.OR, cls.XOR
+        }
+
+    @classmethod
+    def unary_operators(cls) -> Set[str]: 
+        return {
+            cls.NOT, "'"
+        }
+
+    @classmethod
+    def relational_operators(cls) -> Set[str]:
+        return {
+            cls.EQUAL, cls.NOT_EQUAL, cls.GREATER, cls.GREATER_EQUAL, cls.LOWER, cls.LOWER_EQUAL, cls.IN
+        }
+
+    @classmethod
+    def assigns(cls) -> Set[str]:
+        return {
+            cls.ASSIGN, cls.PLUS_ASSIGN, cls.MINUS_ASSIGN, cls.TIMES_ASSIGN, cls.DIVIDE_ASSIGN, cls.REMAINDER_ASSIGN
+        }
 
     literals = {
         '{', '}', '[', ']', '(', ')', 
