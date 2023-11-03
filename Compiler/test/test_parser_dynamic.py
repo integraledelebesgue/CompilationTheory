@@ -34,6 +34,9 @@ def assert_no_throw(method: Callable) -> Callable:
 
 
 class DynamicTest(type):
+    '''Instead of maually defining test methods for each source code file, 
+    simply use this handy metaprogramming hell to create them from the pattern provided.'''
+
     def __new__(cls, name, bases, dct, *, pattern: str) -> Self:
         bases = (*bases, unittest.TestCase)
 
