@@ -1,7 +1,7 @@
 import sly
 from sly.yacc import YaccProduction as Production
 from lexer import Lexer
-
+from syntax_tree.structure.nodes import *
 
 class Parser(sly.Parser):
     debugfile = 'debug/parser_out.txt'
@@ -22,27 +22,40 @@ class Parser(sly.Parser):
         ('nonassoc', ELSE)
     )
 
+    _stack = None
+
+    @property
+    def stack(self) -> list[Node]:
+        if self._stack is None:
+            self._stack = []
+
+        return self._stack
+
     #= TOP LEVEL ENTITY =#
 
     start = 'program'
 
     actions = [
-        # 'expr',
-        # 'statement',
-        # 'function'
-        'statement'  # Simple & effective
+        # macros, annotations, imports etc. can go here
+        'statement'
     ]
 
     @_(*actions)
     def action(self, p: Production):
+        self.stack.append(p := p.statement)
         return p
 
     @_('action')
     def program(self, p: Production):
+        self.stack.append(p := Program([p.action]))
         return p
     
     @_('program action')
     def program(self, p: Production):
+        print(p.program)
+        print(p.action)
+        print(2 * '\n')
+        self.stack.append(p.program)
         return p
 
     #= EXPRESSIONS =#
@@ -72,6 +85,14 @@ class Parser(sly.Parser):
 
     @_(*binary_expr)
     def expr(self, p: Production):
+        self.stack.append(BinaryExpression(
+            None, 
+            None,
+            operator=p[1],
+            left=p[0],
+            right=p[2]
+        ))
+
         return p
     
     prefix_unary_expr = [
@@ -81,6 +102,13 @@ class Parser(sly.Parser):
 
     @_(*prefix_unary_expr)
     def expr(self, p: Production):
+        self.stack.append(UnaryExpression(
+            None, 
+            None,
+            operator=p[0],
+            operand=p[1]
+        ))
+
         return p
     
     postfix_unary_expr = [
@@ -89,11 +117,18 @@ class Parser(sly.Parser):
 
     @_(*postfix_unary_expr)
     def expr(self, p: Production):
+        self.stack.append(UnaryExpression(
+            None,
+            None,
+            operand=p[0],
+            operator=p[1]
+        ))
+
         return p
     
     @_('"(" expr ")"')
     def expr(self, p: Production):
-        return p
+        self.stack.append(p[1])
 
     simple_expr = [
         'ID',
@@ -168,11 +203,11 @@ class Parser(sly.Parser):
 
     @_('expr ";"')
     def statement(self, p: Production):
-        return p
+        return p.expr
     
     @_('function')
     def statement(self, p: Production):
-        return p
+        return p.function
 
     parenless_statement = [
         'PRINT expr_list ";"',
