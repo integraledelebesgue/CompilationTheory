@@ -413,7 +413,7 @@ class Parser(sly.Parser):
         body = Parser.ensure_block(p.statement)
 
         return For(
-            p.ID,
+            Identifier(p.ID),
             p.expr,
             body
         )
