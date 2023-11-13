@@ -3,6 +3,10 @@ from os.path import abspath
 from lexer import Lexer
 from parser import Parser
 
+import syntax_tree.observer.printer
+
+from utilities.colors import ANSII
+
 
 def print_error() -> None:
     ansii_red = "\033[91m {}\033[00m"
@@ -35,5 +39,8 @@ if __name__ == '__main__':
     parser = Parser()
     parser.parse(tokens)
 
-    print(*parser.root.actions, sep='\n')
+    # print(*parser.root.actions, sep='\n')
+
+    parser.root.display()
+
 
