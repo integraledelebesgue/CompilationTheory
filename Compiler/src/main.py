@@ -35,5 +35,5 @@ if __name__ == '__main__':
     parser = Parser()
     parser.parse(tokens)
 
-    # print(*parser.stack, sep='\n')
+    print(*parser.root.actions, sep='\n')
 
