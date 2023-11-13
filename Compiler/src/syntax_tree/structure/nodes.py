@@ -1,34 +1,42 @@
 from typing import Any, Optional, List, Dict, Tuple, Literal
 from dataclasses import dataclass
-from enum import Enum
+from utilities.colors import ANSII
 
 
+def abstract(cls):
+    return cls
+
+
+@abstract
 @dataclass
 class Node:
     pass
 
 
+@abstract
 @dataclass
 class Action(Node):
     pass
 
 
+@abstract
 @dataclass
 class Statement(Action):
     pass
 
 
-@dataclass
+@dataclass()
 class Program:
     actions: List[Action]
 
-
+    
 @dataclass
 class Identifier(Node):
     name: str
     type: Optional[str] = None
 
 
+@abstract
 @dataclass
 class Expression(Node):
     value: Any
@@ -109,32 +117,23 @@ class BuiltinCall(Call):  # Useless, delete as soon as modules with builtin func
 
 
 @dataclass
-class RelationalExpression(BinaryExpression):
-    pass
-
-
-@dataclass
 class Assignment(Statement):
     operator: str
     left: Expression
     right: Expression
     
 
-@dataclass
-class Condition(Expression):
-    pass
-
 
 @dataclass
 class If(Statement):
-    condition: Condition
+    condition: Expression
     body: List[Statement]
     else_body: Optional[List[Statement]]
 
 
 @dataclass
 class While(Statement):
-    condition: Condition
+    condition: Expression
     body: List[Statement]
 
 
