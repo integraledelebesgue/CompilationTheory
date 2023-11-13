@@ -26,14 +26,6 @@ class Parser(sly.Parser):
     )
 
     root: Optional[Node] = None
-    # _stack: Optional[List[Node]] = None
-
-    # @property
-    # def stack(self) -> list[Node]:
-    #     if self._stack is None:
-    #         self._stack = []
-
-    #     return self._stack
 
     #= TOP LEVEL ENTITY =#
 
@@ -85,8 +77,7 @@ class Parser(sly.Parser):
             None,
             operator=p[1],
             left=p[0],
-            right=p[2],
-            broadcast=('.' in p[1])
+            right=p[2]
         )
     
     relational_expression = [

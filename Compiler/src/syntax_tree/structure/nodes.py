@@ -66,6 +66,9 @@ class BinaryExpression(Expression):
     right: Optional[Expression]
     broadcast: bool = False
 
+    def __post_init__(self):
+        self.broadcast = '.' in self.operator
+
 
 @dataclass
 class RelationalExpression(BinaryExpression):
