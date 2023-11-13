@@ -66,12 +66,12 @@ def display(self: Program) -> None:
 
 @addToClass(Identifier)
 def display(self: Identifier, prefix: str) -> None:
-    print(prefix + f"{name(self)}: '{self.name}'")
+    print(prefix + f"{name(self)} '{self.name}'")
 
 
 @addToClass(Expression)
 def display(self: Expression, prefix='') -> None:
-    print(prefix + f"{name(self)}: {self.type or 'any'}: '{self.value}'")
+    print(prefix + f"{name(self)} {self.type or 'any'}: '{self.value}'")
 
 
 @addToClass(ExpressionList)
@@ -175,8 +175,8 @@ def display(self: If, prefix='') -> None:
         then_prefix = clean_prefix + vertical_branch + horizontal_line + ' '
         else_prefix = clean_prefix + vertical_branch_end + horizontal_line + ' '
 
-    block_prefix = clean(then_prefix) + '   ' + vertical_branch + horizontal_line + ' '
-    block_end_prefix = clean(then_prefix) + '    ' + vertical_branch_end + horizontal_line + ' '
+    block_prefix = clean(then_prefix) + vertical_branch + horizontal_line + ' '
+    block_end_prefix = clean(then_prefix) + vertical_branch_end + horizontal_line + ' '
 
     print(prefix + 'If')
     self.condition.display(condition_prefix)
@@ -224,14 +224,14 @@ def display(self: For, prefix='') -> None:
     clean_prefix = clean(prefix)
     iterator_prefix = clean_prefix + vertical_branch + horizontal_line + ' '
     do_prefix = clean_prefix + vertical_branch_end + horizontal_line + ' '
-    range_prefix = clean(iterator_prefix) + ' ' + vertical_branch_end + horizontal_line + ' '
+    range_prefix = clean(iterator_prefix) + vertical_branch_end + horizontal_line + ' '
 
     block_prefix = clean_prefix + '    ' + vertical_branch + horizontal_line + ' '
     block_end_prefix = clean_prefix + '    ' + vertical_branch_end + horizontal_line + ' '
 
     print(prefix + 'For')
     print(iterator_prefix + 'Iterator')
-    print(range_prefix + self.iterator)
+    self.iterator.display(range_prefix)
 
     print(iterator_prefix + 'In')
     self.range.display(range_prefix)
