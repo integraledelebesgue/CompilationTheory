@@ -3,7 +3,7 @@ from os.path import abspath
 from lexer import Lexer
 from parser import Parser
 
-import syntax_tree.observer.printer
+# import syntax_tree._observer.printer
 
 from utilities.colors import ANSII
 
