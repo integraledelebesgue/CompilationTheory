@@ -6,6 +6,7 @@ from syntax_tree.structure.nodes import *
 from functools import reduce
 from operator import add
 
+
 class Parser(sly.Parser):
     debugfile = 'debug/parser_out.txt'
 
@@ -182,7 +183,7 @@ class Parser(sly.Parser):
     
     @_('')
     def expr_list(self, p: Production): # (TODO fix) Shift-reduce conflict
-        return ExpressionList([], [])
+        return ExpressionList([])
 
     @_('expr_list "," expr')
     def expr_list(self, p: Production):
@@ -212,11 +213,21 @@ class Parser(sly.Parser):
 
     @staticmethod
     def homogeneous_shape(vectors: List[Vector]) -> bool:
-        return set(map(lambda v: v.length, vectors)).__len__() == 1
+        lengths = {
+            v.length for v in vectors
+        }
+
+        return len(lengths) == 1
     
     @staticmethod
     def homogeneous_type(vectors: List[Vector]) -> bool:
-        return reduce(set.union, map(lambda v: set(v.types), vectors)).__len__() == 1
+        types = {
+            element.type 
+            for vector in vectors 
+            for element in vector.elements 
+        }
+
+        return len(types) == 1
     
     @staticmethod
     def verify(vectors: List[Vector]) -> None:
@@ -230,9 +241,9 @@ class Parser(sly.Parser):
     def matrix(self, p: Production):
         vectors = p.vector_list
 
-        # Parser.verify(vectors)
+        Parser.verify(vectors)
         
-        # type = vectors[0].types[0]
+        type = vectors[0].elements[0].type
         
         shape = (
             len(vectors), 
@@ -241,7 +252,7 @@ class Parser(sly.Parser):
 
         return Matrix(
             None,
-            None, # TODO typing
+            type,
             vectors,
             shape
         )
