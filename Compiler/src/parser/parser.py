@@ -42,14 +42,14 @@ class Parser(sly.Parser):
 
     @_('action')
     def program(self, p: Production):
-        node = Program([p.action])
+        node = Program(Block([p.action]))
         self.root = node
         return node
     
     @_('program action')
     def program(self, p: Production):
         node = p.program
-        node.actions.append(p.action)
+        node.content.actions.append(p.action)
 
         self.root = node
 
@@ -188,19 +188,17 @@ class Parser(sly.Parser):
     def expr_list(self, p: Production):
         node = p.expr_list
         node.elements.append(p.expr)
-        node.types.append(None)
 
         return node
     
     @_('expr')
     def expr_list(self, p: Production):
-        return ExpressionList([p.expr], [None])
+        return ExpressionList([p.expr])
     
     @_('"[" expr_list "]"')
     def vector(self, p: Production):
         return Vector(
             elements=p.expr_list.elements,
-            types=p.expr_list.types,
             length=len(p.expr_list.elements)
         )
 
@@ -232,9 +230,9 @@ class Parser(sly.Parser):
     def matrix(self, p: Production):
         vectors = p.vector_list
 
-        Parser.verify(vectors)
+        # Parser.verify(vectors)
         
-        type = vectors[0].types[0]
+        # type = vectors[0].types[0]
         
         shape = (
             len(vectors), 
@@ -242,8 +240,9 @@ class Parser(sly.Parser):
         )
 
         return Matrix(
+            None,
+            None, # TODO typing
             vectors,
-            type,
             shape
         )
     
@@ -266,16 +265,16 @@ class Parser(sly.Parser):
         return BuiltinCall(
             None,
             'matrix',
-            p[0],
+            Identifier(p[0], 'function'),
             p.expr_list
         )
     
-    @_('expr "(" expr_list ")" %prec CALL') 
+    @_('expr "(" expr_list ")" %prec CALL')
     def expr(self, p: Production):
         return Call(
             None,
             None,
-            p[0],
+            Expression(p[0], type='identifier?'),
             p.expr_list
         )
     
@@ -284,17 +283,17 @@ class Parser(sly.Parser):
         return Subscription(
             None,
             None,
-            p[0],
+            Expression(p[0], type='identifier?'),
             p.expr_list
         )
     
     #= DEFINITIONS =# 
 
     @staticmethod
-    def ensure_block(statement_or_block: Union[Statement, List[Statement]]) -> List[Statement]:
+    def ensure_block(statement_or_block: Union[Statement, Block]) -> Block:
         block = statement_or_block\
-            if isinstance(statement_or_block, list)\
-            else [statement_or_block]
+            if isinstance(statement_or_block, Block)\
+            else Block([statement_or_block])
         
         return block
 
@@ -302,19 +301,11 @@ class Parser(sly.Parser):
 
     @_('FUNCTION ID "(" expr_list ")" statement')
     def function(self, p: Production):
-        argument_names = p.expr_list.elements
-        
-        arguments = Arguments(
-            argument_names,
-            [None for _ in argument_names],
-            [None for _ in argument_names]
-        )
-
         body = Parser.ensure_block(p.statement)
         
         return Function(
             p.ID,
-            arguments,
+            p.expr_list,
             body
         )
     
@@ -337,7 +328,7 @@ class Parser(sly.Parser):
         return BuiltinCall(
             None,
             None,
-            p[0],
+            Identifier(p[0], 'function'),
             p.expr_list
         )
 
@@ -385,7 +376,7 @@ class Parser(sly.Parser):
         return If(
             p.expr,
             body,
-            None
+            Block([])
         )
     
     @_('IF "(" expr ")" statement ELSE statement')
@@ -420,7 +411,7 @@ class Parser(sly.Parser):
     
     @_('"{" statement_series "}"')
     def statement(self, p: Production):
-        return p.statement_series
+        return Block(p.statement_series)
 
     @_('statement')
     def statement_series(self, p: Production):
