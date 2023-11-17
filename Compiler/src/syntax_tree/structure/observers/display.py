@@ -125,7 +125,7 @@ def inline_postfix(obj: 'Node', attributes: list[str]) -> str:
     return '(' + ', '.join(values) + ')'
 
 
-def display_method(inline: Optional[list[str]], simple: Optional[list[str]], recursive: Optional[list[str]]) -> None:
+def display_method(inline: Optional[list[str]], simple: Optional[list[str]], recursive: Optional[list[str]]) -> Callable:
     def display(obj: 'Node', prefix: str = ''):
         nonlocal inline, simple, recursive
 
