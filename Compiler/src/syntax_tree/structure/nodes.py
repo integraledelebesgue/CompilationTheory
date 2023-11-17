@@ -52,8 +52,8 @@ class Vector(ExpressionList, metaclass=ObservableNode, inline=['length']):
 
 
 @dataclass
-class Matrix(Expression, metaclass=ObservableNode, simple=['shape']):
-    elements: List[Vector]
+class Matrix(Expression, metaclass=ObservableNode, inline=['shape'], recursive=['rows']):
+    rows: List[Vector]
     shape: Tuple[int, int]
 
 

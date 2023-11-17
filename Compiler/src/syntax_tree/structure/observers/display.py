@@ -120,7 +120,7 @@ def inline_postfix(obj: 'Node', attributes: list[str]) -> str:
     if len(attributes) == 0:
         return ''
     
-    values = [obj.__getattribute__(name) for name in attributes]
+    values = [str(obj.__getattribute__(name)) for name in attributes]
 
     return '(' + ', '.join(values) + ')'
 
