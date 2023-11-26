@@ -11,7 +11,7 @@ branch = vertical_branch + horizontal_line + ' '
 branch_end = vertical_branch_end + horizontal_line + ' '
 
 
-def for_each(func: Callable, final: Optional[Callable], collection: list[str]) -> None:
+def for_each(func: Callable[['Node'], None], final: Optional[Callable[['Node'], None]], collection: list[str]) -> None:
     match len(collection):
         case 0:
             return
@@ -41,7 +41,7 @@ def display_list(collection: list['Node'], prefix: str) -> None:
     )
 
 
-def get_and_display(obj: 'Node', prefix: str) -> Callable:
+def get_and_display(obj: 'Node', prefix: str) -> Callable[[str], None]:
     def call_display(name: str):
         attribute = obj.__getattribute__(name)
 
@@ -125,7 +125,7 @@ def inline_postfix(obj: 'Node', attributes: list[str]) -> str:
     return '(' + ', '.join(values) + ')'
 
 
-def display_method(inline: Optional[list[str]], simple: Optional[list[str]], recursive: Optional[list[str]]) -> Callable:
+def display_method(inline: Optional[list[str]], simple: Optional[list[str]], recursive: Optional[list[str]]) -> Callable[['Node', str], None]:
     def display(obj: 'Node', prefix: str = ''):
         nonlocal inline, simple, recursive
 
