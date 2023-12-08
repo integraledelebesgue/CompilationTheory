@@ -1,1 +1,1 @@
-from syntax_tree.structure.observers import display
+from syntax_tree.structure.observers import display, typecheck

@@ -1,5 +1,5 @@
 # control flow instruction
-
+#continue;
 N = 10;
 M = 20;
 
@@ -37,8 +37,8 @@ while(k>0) {
     k = k - 1;
 }
 
-
-for (i in 1:N)
+for (m in 1:N)
+#for (i in 1:N)
   for (j in i:M)
     print i, j;
  

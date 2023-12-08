@@ -158,13 +158,13 @@ class Parser(sly.Parser):
     
     @_('ID')
     def expr(self, p: Production):
-        return Identifier(p.ID)
+        return Identifier(p.ID, p.lineno)
     
     @_('INT_NUMBER')
     def expr(self, p: Production):
         return Expression(
             p.INT_NUMBER,
-            'int'
+            'int32'
         )
 
     @_('FLOAT_NUMBER')
@@ -200,6 +200,7 @@ class Parser(sly.Parser):
     def vector(self, p: Production):
         return Vector(
             elements=p.expr_list.elements,
+            type=None,
             length=len(p.expr_list.elements)
         )
 
@@ -234,8 +235,8 @@ class Parser(sly.Parser):
         if not Parser.homogeneous_shape(vectors):
             raise Exception('') # TODO Error handling
         
-        if not Parser.homogeneous_type(vectors):
-            raise Exception('')
+        # if not Parser.homogeneous_type(vectors):  # move to typechecker
+        #     raise Exception('')
 
     @_('"[" vector_list "]"')
     def matrix(self, p: Production):
@@ -243,7 +244,7 @@ class Parser(sly.Parser):
 
         Parser.verify(vectors)
         
-        type = vectors[0].elements[0].type
+        # type = vectors[0].elements[0].type
         
         shape = (
             len(vectors), 
@@ -252,7 +253,7 @@ class Parser(sly.Parser):
 
         return Matrix(
             None,
-            type,
+            None,
             vectors,
             shape
         )
@@ -275,8 +276,8 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return BuiltinCall(
             None,
-            'matrix',
-            Identifier(p[0], 'function'),
+            'matrix<int32>',
+            Identifier(p[0], 'function', p.lineno),
             p.expr_list
         )
     
@@ -285,7 +286,7 @@ class Parser(sly.Parser):
         return Call(
             None,
             None,
-            Expression(p[0], type='identifier?'),
+            Expression(p[0], type='function'),
             p.expr_list
         )
     
@@ -294,7 +295,7 @@ class Parser(sly.Parser):
         return Subscription(
             None,
             None,
-            Expression(p[0], type='identifier?'),
+            Expression(p[0], type='any'),
             p.expr_list
         )
     
@@ -339,7 +340,7 @@ class Parser(sly.Parser):
         return BuiltinCall(
             None,
             None,
-            Identifier(p[0], 'function'),
+            Identifier(p[0], p.lineno, 'function'),
             p.expr_list
         )
 
@@ -415,7 +416,7 @@ class Parser(sly.Parser):
         body = Parser.ensure_block(p.statement)
 
         return For(
-            Identifier(p.ID),
+            Identifier(p.ID, p.lineno),
             p.expr,
             body
         )

@@ -41,6 +41,8 @@ if __name__ == '__main__':
 
     # print(*parser.root.actions, sep='\n')
 
+    parser.root.structurize()
+    parser.root.content.check_types()
     parser.root.display()
 
 
