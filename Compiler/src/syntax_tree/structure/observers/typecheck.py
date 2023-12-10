@@ -1,5 +1,5 @@
 from typing import Callable, Optional
-from itertools import filterfalse
+from semantics.types import nothing, Type
 
 def unique(collection: list[str]) -> list[str]:
     return list(dict.fromkeys(collection))
@@ -48,10 +48,14 @@ def children_types(obj: 'Node', names: list[str]) -> tuple[str, ...]:
 
 def assign_to_children(obj: 'Node', names: list[str], type: str) -> None:
     for name in names:
-        obj.__getattribute__(name).type = type
+        child = obj.__getattribute__(name)
+        child.type = type
+
+        if hasattr(child, 'typing_hook'):
+            child.typing_hook()
 
 
-def typecheck_method(source: list[str], sink: list[str]) -> Callable[['Node'], None]:
+def typecheck_method(source: list[str], sink: list[str], decapsulate: bool) -> Callable[['Node'], None]:
     def check_types(obj: 'Node'):
         nonlocal source, sink
 
@@ -74,12 +78,13 @@ def typecheck_method(source: list[str], sink: list[str]) -> Callable[['Node'], N
         if hasattr(obj, 'dispatch'):
             type = obj.dispatch(type)
         else:  # TODO error if type has length other than 1 here
-            type = type[0] or 'nothing'
+            type = type[0] or nothing
         
-        if len(sink) == 0:
+        if len(sink) > 0:
+            assign_to_children(obj, sink, type.element_type if decapsulate else type)
+
+        if hasattr(obj, 'type'):
             obj.type = type
-        else:
-            assign_to_children(obj, sink, type)
 
         if hasattr(obj, 'typing_hook'):
             obj.typing_hook()
@@ -89,16 +94,15 @@ def typecheck_method(source: list[str], sink: list[str]) -> Callable[['Node'], N
     return check_types
 
 
-def dispatch_method(key: str, type_table: dict[tuple[str, ...], str]) -> Callable[['Node'], None]:
-    def dispatch(obj: 'Node', types: list[str]) -> Optional[str]:
+def dispatch_method(key: str, type_table: dict[tuple[Type, ...], Type]) -> Callable[['Node'], Type]:
+    def dispatch(obj: 'Node', types: list[Type]) -> Optional[str]:
         variants = type_table[obj.__getattribute__(key)]
+
+        print(f'Dispatching {obj}({types})')
         
         if types in variants:
             return variants[types]
-        
-        if 'default' in variants:
-            return variants['default']
 
-        return 'any'
+        raise RuntimeError(f'No dispatch available for {obj} & {types}')
 
     return dispatch

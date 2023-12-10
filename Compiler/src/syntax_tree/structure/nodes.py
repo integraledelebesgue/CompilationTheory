@@ -1,22 +1,25 @@
 from typing import get_type_hints, Any, Optional, Tuple, Literal, Sequence
-import dataclasses
 from dataclasses import dataclass
-from utilities.colors import ANSII
 from syntax_tree.structure.observable import ObservableNode
 from semantics import dispatch
 from itertools import count
 from functools import cached_property
+from semantics.types import *
 
 
 class Scope:
     symbols: dict['Identifier', int]
     id: int
+    parent: Optional['Scope']
+    children: list['Scope']
 
     instances = count()
 
     def __init__(self) -> None:
         self.symbols = dict()
         self.id = Scope.instances.__next__()
+        self.parent = None
+        self.children = []
 
     def define(self, id: 'Identifier') -> None:
         self.symbols[id] = id.line
@@ -90,6 +93,25 @@ class Node:
 
             parent = parent.parent
 
+        # parent = self.parent
+        # previous = None
+
+        # while parent is not None:
+        #     if not parent.defines_scope:
+        #         parent = parent.parent
+        #         continue
+
+
+
+        #     if previous is not None:
+        #         previous.parent = parent.scope
+        #         parent.scope.children.append(previous)
+
+        #     previous = parent.scope
+        #     parent = parent.parent
+
+        #     yield previous
+
 
 @dataclass
 class Action(Node):
@@ -125,7 +147,8 @@ class Program(
 
     @property
     def superscopes(self) -> Sequence['Block']:
-        return (self.content for _ in range(1))
+        yield self.content
+        # return (self.content for _ in range(1))
 
 
 @dataclass
@@ -138,7 +161,7 @@ class Identifier(
 ):
     name: str
     line: int
-    type: str = 'any'
+    type: Type = None
 
     @property
     def defined(self) -> bool:
@@ -148,12 +171,19 @@ class Identifier(
         )
 
     def typing_hook(self) -> None:
-        if self.defined:
+        # if self.defined:
+        #     self.type = 
+        #     print(f'Identifier {self.fancy_repr} is defined in scope {self.scope}')
+        #     return
+
+        if self.owner.has_element_before(self):
+            self.type = self.owner.type(self.name)
             return
-        
+
         for scope in self.superscopes:
             if scope.has_element_before(self):
                 self.type = scope.type(self.name)
+                print(f'Identifier {self.fancy_repr} is defined in scope {scope}')
                 return
 
         print(f'Identifier {self.fancy_repr} is undefined')
@@ -173,7 +203,7 @@ class Expression(
         display={ 'simple': ['value', 'type'] }
 ):
     value: Any
-    type: Optional[str]
+    type: Type
 
 
 @dataclass
@@ -194,7 +224,7 @@ class Vector(
 ):
     type: Optional[str]
     length: int
-    element_type: Optional[str] = None
+    element_type: Type = None
 
     def typing_hook(self) -> None:
         type = self.type[0]
@@ -203,7 +233,7 @@ class Vector(
             raise Exception('')  # TODO precise error
         
         self.element_type = type
-        self.type = f'vector<{type}>'
+        self.type = Collection('vector', type)
 
 
 @dataclass
@@ -215,7 +245,7 @@ class Matrix(
 ):
     rows: list[Vector]
     shape: Tuple[int, int]
-    element_type: Optional[str] = None
+    element_type: Type = None
 
     def typing_hook(self) -> None:
         type = self.type[0]
@@ -226,7 +256,7 @@ class Matrix(
         type = self.rows[0].element_type
 
         self.element_type = type
-        self.type = f'matrix<{type}>'
+        self.type = Collection('matrix', type)
 
 
 @dataclass
@@ -298,25 +328,27 @@ class Subscription(
     index: Expression
 
     def typing_hook(self) -> None:
-        pass  # TODO infer actual type here
+        self.type = self.source.type
 
 
 @dataclass
 class Call(
         Expression, 
         metaclass=ObservableNode, 
-        display={ 'recursive': ['function', 'parameters'] }
+        display={ 'recursive': ['function', 'parameters'] },
+        dispatch={ 'key': 'name', 'table': 'functions' }
 ):
     function: Expression
     parameters: ExpressionList
+#   name: str
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        self.name = self.function.name
+
 
     def typing_hook(self) -> None:
         pass  # TODO check LUT or mark as 'any' to move checking to runtime
-
-
-@dataclass
-class BuiltinCall(Call):  # Useless, delete as soon as modules with builtin functions are introduced
-    pass
 
 
 class Loop:
@@ -371,7 +403,7 @@ class For(
         Statement, Loop,
         metaclass=ObservableNode, 
         display={ 'inline': ['scope', 'symbols'], 'recursive': ['iterator', 'range', 'body'] },
-        typecheck={ 'source': ['range'], 'sink': ['iterator'] },
+        typecheck={ 'source': ['range'], 'sink': ['iterator'], 'decapsulate': True },
         defines={ 'symbol': True, 'scope': True }
 ):
     iterator: Any
@@ -399,7 +431,7 @@ class Return(
         typecheck={ 'source': ['expression'] }
 ):
     value: Any
-    type: Optional[str]
+    type: Type
     expression: Optional[Expression]
 
 
@@ -412,7 +444,7 @@ class Control(
 ):  # break, continue, throw etc.
     instruction: Literal['break', 'continue']
     expression: Optional[Expression] = None
-    type: str = 'nothing'
+    type: Type = nothing
 
     def typing_hook(self) -> None:
         if not issubclass(self.parent.__class__, Loop):

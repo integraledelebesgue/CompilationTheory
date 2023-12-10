@@ -52,13 +52,14 @@ class ObservableNode(type):
         dct['dispatch'] = dispatch_method(key, table)
 
     @staticmethod
-    def setup_typecheck(dct, params: dict[Literal['source', 'sink'], list[str]]):
+    def setup_typecheck(dct, params: dict[Literal['source', 'sink', 'decapsulate'], list[str]]):
         source = params.get('source', [])
         sink = params.get('sink', [])
+        decapsulate = params.get('decapsulate', False)
 
         dct['checked'] = False
 
-        dct['check_types'] = typecheck_method(source, sink)
+        dct['check_types'] = typecheck_method(source, sink, decapsulate)
 
         dct['typed_fields'] = {
             'source': source,
@@ -71,6 +72,7 @@ class ObservableNode(type):
 
         if dct['defines_scope']:
             dct['scope'] = None  # placeholder
+            dct['symbols'] = None
         
         dct['defines_symbol'] = params.get('symbol', False)
 

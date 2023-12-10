@@ -5,6 +5,7 @@ from lexer import Lexer
 from syntax_tree.structure.nodes import *
 from functools import reduce
 from operator import add
+from semantics.types import *
 
 
 class Parser(sly.Parser):
@@ -164,21 +165,21 @@ class Parser(sly.Parser):
     def expr(self, p: Production):
         return Expression(
             p.INT_NUMBER,
-            'int32'
+            int32
         )
 
     @_('FLOAT_NUMBER')
     def expr(self, p: Production):
         return Expression(
             p.FLOAT_NUMBER,
-            'float64'
+            float64
         )
     
     @_('STRING')
     def expr(self, p: Production):
         return Expression(
             p.STRING,
-            'string'
+            boolean
         )
     
     @_('')
@@ -274,10 +275,10 @@ class Parser(sly.Parser):
 
     @_(*keyword_expr)
     def expr(self, p: Production):
-        return BuiltinCall(
+        return Call(
             None,
-            'matrix<int32>',
-            Identifier(p[0], 'function', p.lineno),
+            None,
+            Identifier(p[0], p.lineno, function),
             p.expr_list
         )
     
@@ -286,7 +287,7 @@ class Parser(sly.Parser):
         return Call(
             None,
             None,
-            Expression(p[0], type='function'),
+            p[0],
             p.expr_list
         )
     
@@ -295,7 +296,7 @@ class Parser(sly.Parser):
         return Subscription(
             None,
             None,
-            Expression(p[0], type='any'),
+            p[0],
             p.expr_list
         )
     
@@ -337,10 +338,10 @@ class Parser(sly.Parser):
 
     @_(*parenless_calls)
     def statement(self, p: Production):
-        return BuiltinCall(
+        return Call(
             None,
             None,
-            Identifier(p[0], p.lineno, 'function'),
+            Identifier(p[0], p.lineno, function),
             p.expr_list
         )
 
